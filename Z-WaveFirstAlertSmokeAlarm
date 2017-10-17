@@ -68,11 +68,11 @@ metadata {
 
 			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
 
-				attributeState("clear", label:"CLEAR", icon:"castlecole.customdevices.alarm-clear.png", backgroundColor:"#b8f4a4", forgroundColor:"#000000")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/alarm-clear.png", backgroundColor:"#b8f4a4", color:"#000000")
 
-				attributeState("detected", label:"SMOKE", icon:"castlecole.customdevices.alarm-alarm.png", backgroundColor:"#ed0000", forgroundColor:"#000000")
+				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/alarm-alarm.png", backgroundColor:"#ed0000", color:"#000000")
 
-				attributeState("tested", label:"TEST", icon:"castlecole.customdevices.alarm-test.png", backgroundColor:"#e86d13", forgroundColor:"#000000")
+				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/alarm-test.png", backgroundColor:"#e86d13", color:"#000000")
 
 			}
 
