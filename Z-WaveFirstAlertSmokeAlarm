@@ -26,7 +26,9 @@
 
 metadata {
 
-	definition (name: "Z-Wave First Alert Smoke Alarm", namespace: "castlecole", author: "SmartThings") {
+	definition (name: "Z-Wave First Alert Smoke Alarm", namespace: "castlecole", author: "SmartThings",
+                    iconUrl: "https://raw.githubusercontent.com/castlecole/customdevices/fire-icon80.png",
+                    iconX2Url: "https://raw.githubusercontent.com/castlecole/customdevices/fire-icon160.png") {
 
 		capability "Smoke Detector"
 
@@ -68,9 +70,9 @@ metadata {
 
 			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
 
-				attributeState("clear", label:"clear", icon:"castlecole.customdevices.smoke-icon160", backgroundColor:"#ffffff")
+				attributeState("clear", label:"clear", icon:"st.alarm.smoke.clear", backgroundColor:"#b8f4a4")
 
-				attributeState("detected", label:"SMOKE", icon:"st.alarm.smoke.smoke", backgroundColor:"#e86d13")
+				attributeState("detected", label:"SMOKE", icon:"st.alarm.smoke.smoke", backgroundColor:"#ed0000")
 
 				attributeState("tested", label:"TEST", icon:"st.alarm.smoke.test", backgroundColor:"#e86d13")
 
