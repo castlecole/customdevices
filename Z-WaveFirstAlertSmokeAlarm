@@ -68,7 +68,7 @@ metadata {
 
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
 
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#44b621")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#359148")
 
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
 
@@ -80,13 +80,29 @@ metadata {
 
 		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 
-			state "battery", label:'${currentValue}% battery', unit:""
+			state "battery", label:'${currentValue}', unit:"% Battery", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png",
 
 		}
 
 
 
-		main "smoke"
+		multiAttributeTile(name:"smoke2", type:"generic"){
+
+			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
+
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#359148")
+
+				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire.png", backgroundColor:"#ed0000")
+
+				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#e86d13")
+
+			}
+
+		}
+
+
+
+		main "smoke2"
 
 		details(["smoke", "battery"])
 
