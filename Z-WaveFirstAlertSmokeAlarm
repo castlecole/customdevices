@@ -53,7 +53,7 @@ metadata {
 		status "clear": "command: 7105, payload: 01 00"
 
 		status "test": "command: 7105, payload: 0C FF"
-
+ 
 		status "battery 100%": "command: 8003, payload: 64"
 
 		status "battery 5%": "command: 8003, payload: 05"
@@ -80,7 +80,7 @@ metadata {
 
 		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 
-			state "battery", label:'${currentValue}', unit:"% Battery", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
+			state "battery", label:'${currentValue} %', unit:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
 
 		}
 
