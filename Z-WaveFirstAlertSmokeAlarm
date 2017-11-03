@@ -45,7 +45,6 @@ metadata {
 	}
 
 
-
 	simulator {
 
 		status "smoke": "command: 7105, payload: 01 FF"
@@ -64,7 +63,7 @@ metadata {
 
 	tiles (scale: 2){
 
-		multiAttributeTile(name:"smoke", type:"generic", width: 6, height: 4){
+		multiAttributeTile(name:"smoke", type:"generic", width:6, height:4){
 
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
 
@@ -78,14 +77,20 @@ metadata {
 
 		}
 
-		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width:2, height:2) {
 
 			state "battery", label:'${currentValue}%', unit:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
 
 		}
 
+        	standardTile("info", "device.smoke", decoration: "flat", width:4, height:2) {
 
+			state "clear", icon:"", label: "CLEAR"
+			state "smoke", icon:"", label: "FIRE! FIRE! FIRE!"
+			state "tested", icon:"", label: "ALARM TEST"
 
+		}
+		
 		multiAttributeTile(name:"smoke2", type:"generic"){
 
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
@@ -104,7 +109,7 @@ metadata {
 
 		main "smoke2"
 
-		details(["smoke", "battery"])
+		details(["smoke", "battery", "info"])
 
 	}
 
