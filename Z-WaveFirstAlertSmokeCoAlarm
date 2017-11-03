@@ -76,10 +76,10 @@ metadata {
 
 			tileAttribute ("device.alarmState", key: "PRIMARY_CONTROL") {
 
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#359148")
-				attributeState("smoke", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
-				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"st.alarm.carbon-monoxide.carbon-monoxide", backgroundColor:"#e86d13")
-				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear-co0.png", backgroundColor:"#359148")
+				attributeState("smoke", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear-co0.png", backgroundColor:"#ed0000")
+				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco-co0.png", backgroundColor:"#e86d13")
+				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco0.png", backgroundColor:"#e86d13")
 
 			}
 
@@ -91,23 +91,31 @@ metadata {
 
 		}
 
+	        standardTile("info", "device.alarmState", decoration: "flat", width: 4, height: 2) {
+
+			state "clear", icon:"", label: "CLEAR"
+			state "smoke", icon:"", label: "((( FIRE! FIRE! FIRE! )))"
+			state "carbonMonoxide", icon:"", label: "&&&  CARBON MONOXIDE  &&&"
+			state "tested", icon:"", label: "ALARM TEST"
+
+		}
 
 		multiAttributeTile(name:"smoke2", type:"generic"){
 
 			tileAttribute ("device.alarmState", key:"PRIMARY_CONTROL") {
 
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#359148")
-				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire.png", backgroundColor:"#ed0000")
-				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire.png", backgroundColor:"#e86d13")
-        attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#e86d13")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#359148")
+				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#ed0000")
+				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire-co.png", backgroundColor:"#e86d13")
+                                attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#e86d13")
 
-        }
+        		}
 
 		}
 
 		main "smoke2"
 
-		details(["smoke", "battery"])
+		details(["smoke", "battery", "info"])
 
 	}
 
