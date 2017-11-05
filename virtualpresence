@@ -19,7 +19,6 @@ metadata {
         capability "Presence Sensor"
 
 		capability "Sensor"
-
         
 
 		command "arrived"
@@ -46,7 +45,7 @@ metadata {
 
 			state "off", label: 'Away', action: "switch.on", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-icon.png", backgroundColor: "#ffffff", nextState: "on"
 
-			state "on", label: 'Present', action: "switch.off", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-icon.png", backgroundColor: "#53a7c0", nextState: "off"
+			state "on", label: 'Present', action: "switch.off", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/wl-heavy-rain.gif", backgroundColor: "#53a7c0", nextState: "off"
 
 		}
 
@@ -56,7 +55,7 @@ metadata {
 
 		}
 
-        standardTile("presence", "device.presence", width: 1, height: 1, canChangeBackground: true) {
+        	standardTile("presence", "device.presence", width: 1, height: 1, canChangeBackground: true) {
 
 			state("present", labelIcon:"st.presence.tile.mobile-present", backgroundColor:"#53a7c0")
 
