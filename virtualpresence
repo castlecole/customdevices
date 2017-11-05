@@ -41,17 +41,17 @@ metadata {
 
 	tiles {
 
-		standardTile("button", "device.switch", width: 2, height: 2, canChangeIcon: true,  canChangeBackground: true) {
+		standardTile("button", "device.switch", width: 2, height: 2, canChangeIcon: false,  canChangeBackground: true) {
 
-			state "off", label: 'Away', action: "switch.on", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/wl-heavy-rain.gif", backgroundColor: "#ffffff", nextState: "on"
+			state "off", label: 'Away', action: "switch.on", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-no-icon.png", backgroundColor: "#ffffff", nextState: "on"
 
-			state "on", label: 'Present', action: "switch.off", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/wl-heavy-rain.gif", backgroundColor: "#53a7c0", nextState: "off"
+			state "on", label: 'Present', action: "switch.off", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-icon.png", backgroundColor: "#53a7c0", nextState: "off"
 
 		}
 
 		standardTile("refresh", "device.switch", inactiveLabel: false, decoration: "flat") {
 
-			state "default", label:'', action:"refresh.refresh", icon:"st.secondary.refresh"
+			state "default", label:'', action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
 
 		}
 
