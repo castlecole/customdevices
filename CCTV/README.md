@@ -1,3 +1,4 @@
+
 ## SCRATCH DIRECTORY FOR BUILDING CAMERA INTERFACES
 
 Example code for connect to Synology Diskstation / Surveillance Station on your local network and create camera devices for each camera in the Survellance Station application.
@@ -42,3 +43,16 @@ Connect to your DiskStation:
 * Follow the instructions in the App for the rest of the details
 
 If you add new cameras to your system, go through the Diskstation (Connect) app again to add the new cameras. If you already set up motion detection, you do not need to do it again.
+
+
+# Generic-Video-Camera
+Generic Video Camera Live Streaming Video in SmartThings Tile View
+
+Install the 2 smartapps and devicetype in IDE.
+
+Add SmartApp Connect app to your mobile install
+Go into SmartApps, Generic Video Camera Connect App
+Add Cameras
+Either use drop down and edit in the child smartapp in IDE for your cameras
+or
+use the custom url to add any url to stream.
