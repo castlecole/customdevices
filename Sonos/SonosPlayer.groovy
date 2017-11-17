@@ -35,10 +35,10 @@ metadata {
 	}
 
 	// Main
-	standardTile("main", "device.status", width: 1, height: 1, canChangeIcon: true) {
-		state "paused", label:'Paused', action:"music Player.play", icon:"st.Electronics.electronics16", nextState:"playing", backgroundColor:"#ffffff"
-		state "playing", label:'Playing', action:"music Player.pause", icon:"st.Electronics.electronics16", nextState:"paused", backgroundColor:"#79b821"
-		state "grouped", label:'Grouped', icon:"st.Electronics.electronics16", backgroundColor:"#ffffff"
+	standardTile("main", "device.status", width: 1, height: 1, canChangeIcon: false) {
+		state "paused", label:'Paused', action:"music Player.play", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-blue.png", nextState:"playing", backgroundColor:"#ffffff"
+		state "playing", label:'Playing', action:"music Player.pause", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-green.png", nextState:"paused", backgroundColor:"#79b821"
+		state "grouped", label:'Grouped', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-round.png", backgroundColor:"#ffffff"
 	}
 
 	// Row 1
@@ -55,10 +55,10 @@ metadata {
 
 	// Row 2
 	standardTile("status", "device.status", width: 1, height: 1, decoration: "flat", canChangeIcon: true) {
-		state "playing", label:'Playing', action:"music Player.pause", icon:"st.Electronics.electronics16", nextState:"paused", backgroundColor:"#ffffff"
-		state "stopped", label:'Stopped', action:"music Player.play", icon:"st.Electronics.electronics16", nextState:"playing", backgroundColor:"#ffffff"
-		state "paused", label:'Paused', action:"music Player.play", icon:"st.Electronics.electronics16", nextState:"playing", backgroundColor:"#ffffff"
-		state "grouped", label:'Grouped', action:"", icon:"st.Electronics.electronics16", backgroundColor:"#ffffff"
+		state "playing", label:'Playing', action:"music Player.pause", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-green.png", nextState:"paused", backgroundColor:"#ffffff"
+		state "stopped", label:'Stopped', action:"music Player.play", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-blue.png", nextState:"playing", backgroundColor:"#ffffff"
+		state "paused", label:'Paused', action:"music Player.play", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-orange.png", nextState:"playing", backgroundColor:"#ffffff"
+		state "grouped", label:'Grouped', action:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/sonos-round.png", backgroundColor:"#ffffff"
 	}
 	standardTile("pause", "device.status", width: 1, height: 1, decoration: "flat") {
 		state "default", label:'', action:"music Player.pause", icon:"st.sonos.pause-btn", nextState:"paused", backgroundColor:"#ffffff"
@@ -81,7 +81,7 @@ metadata {
 
 	// Row 5
 	standardTile("refresh", "device.status", inactiveLabel: false, decoration: "flat") {
-		state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh", backgroundColor:"#ffffff"
+		state "default", label:"", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png", backgroundColor:"#ffffff"
 	}
 	standardTile("model", "device.model", width: 1, height: 1, decoration: "flat") {
 		state "Sonos PLAY:1", label:'', action:"", icon:"st.sonos.sonos-play1", backgroundColor:"#ffffff"
