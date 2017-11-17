@@ -7,7 +7,7 @@
 
 metadata {
 	// Automatically generated. Make future change here.
-	definition (name: "Sonos Player", namespace: "smartthings", author: "SmartThings") {
+	definition (name: "Sonos Player", namespace: "castlecole", author: "SmartThings") {
 		capability "Actuator"
 		capability "Switch"
 		capability "Refresh"
