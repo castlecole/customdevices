@@ -1,4 +1,4 @@
-/**
+ /**
  *  Sonos Player
  *
  *  Author: SmartThings
@@ -7,7 +7,7 @@
 
 metadata {
 	// Automatically generated. Make future change here.
-	definition (name: "Sonos Player", namespace: "castlecole", author: "SmartThings") {
+	definition (name: "Sonos Player Plus", namespace: "castlecole", author: "SmartThings") {
 		capability "Actuator"
 		capability "Switch"
 		capability "Refresh"
