@@ -18,7 +18,7 @@
  */
 definition(
     name: "Sonos Control",
-    namespace: "smartthings",
+    namespace: "castlecole",
     author: "SmartThings",
     description: "Play or pause your Sonos when certain actions take place in your home.",
     category: "SmartThings Labs",
