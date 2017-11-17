@@ -17,7 +17,7 @@
  */
 definition(
     name: "Sonos Weather Forecast",
-    namespace: "smartthings",
+    namespace: "castlecole",
     author: "SmartThings",
     description: "Play a weather report through your Sonos when the mode changes or other events occur",
     category: "SmartThings Labs",
