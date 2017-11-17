@@ -16,7 +16,7 @@
  */
 definition(
 	name: "Sonos (Connect)",
-	namespace: "smartthings",
+	namespace: "castlecole",
 	author: "SmartThings",
 	description: "Allows you to control your Sonos from the SmartThings app. Perform basic functions like play, pause, stop, change track, and check artist and song name from the Things screen.",
 	category: "SmartThings Labs",
