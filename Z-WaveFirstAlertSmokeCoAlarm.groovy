@@ -104,9 +104,9 @@ metadata {
 
 			tileAttribute ("device.alarmState", key:"PRIMARY_CONTROL") {
 
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#359148")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Normal.png", backgroundColor:"#359148")
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#ed0000")
-				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire-co.png", backgroundColor:"#e86d13")
+				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Event.png", backgroundColor:"#e86d13")
                                 attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#e86d13")
 
         		}
