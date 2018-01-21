@@ -1,27 +1,15 @@
 /**
-
  *  Copyright 2015 SmartThings
-
  *
-
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
-
  *  in compliance with the License. You may obtain a copy of the License at:
-
  *
-
  *      http://www.apache.org/licenses/LICENSE-2.0
-
  *
-
  *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
-
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
-
  *  for the specific language governing permissions and limitations under the License.
-
  *  Customisations: 17-10-2017   Icons and colour states
-
  */
 
 metadata {
@@ -65,7 +53,7 @@ metadata {
 		
 		multiAttributeTile(name:"smoke2", type:"generic"){
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#359148")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Normal.png", backgroundColor:"#359148")
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire.png", backgroundColor:"#ed0000")
 				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#e86d13")
 			}
@@ -73,9 +61,7 @@ metadata {
 
 		main "smoke2"
 		details(["smoke", "battery", "info"])
-
 	}
-
 }
 
 def installed() {
