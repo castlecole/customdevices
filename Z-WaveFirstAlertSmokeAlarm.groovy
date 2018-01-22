@@ -1,3 +1,4 @@
+
 /**
  *  Copyright 2015 SmartThings
  *
@@ -19,6 +20,7 @@ metadata {
 		capability "Sensor"
 		capability "Battery"
 		capability "Health Check"
+		attribute  "lastCheckin", "string"
 
 		fingerprint deviceId: "0xA100", inClusters: "0x20,0x80,0x70,0x85,0x71,0x72,0x86"
 		fingerprint mfr:"0138", prod:"0001", model:"0001", deviceJoinName: "First Alert Smoke Detector - Custom"
@@ -39,7 +41,7 @@ metadata {
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
 				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
 			}
-			tileAttribute("device.checkInterval", key: "SECONDARY_CONTROL") {
+			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
 				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
 			}
 		}
@@ -98,6 +100,11 @@ def updated() {
 
 def parse(String description) {
 	def results = []
+	
+	//  send event for heartbeat    
+  	def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
+  	sendEvent(name: "lastCheckin", value: now)
+	
 	if (description.startsWith("Err")) {
 	    results << createEvent(descriptionText:description, displayed:true)
 	} else {
