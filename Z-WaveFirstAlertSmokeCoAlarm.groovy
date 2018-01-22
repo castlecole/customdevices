@@ -20,6 +20,8 @@ metadata {
 		capability "Battery"
 		capability "Health Check"
 		attribute "alarmState", "string"
+		attribute "lastCheckin", "string"
+
 		fingerprint mfr:"0138", prod:"0001", model:"0002", deviceJoinName: "First Alert Smoke Detector and Carbon Monoxide Alarm (ZCOMBO)"
 	}
 
@@ -41,7 +43,7 @@ metadata {
 				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco-co0.png", backgroundColor:"#e86d13")
 				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco0.png", backgroundColor:"#e86d13")
 			}
-			tileAttribute("device.checkInterval", key: "SECONDARY_CONTROL") {
+			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
 				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
 			}
 		}
@@ -106,6 +108,11 @@ def updated() {
 
 def parse(String description) {
 	def results = []
+
+	//  send event for heartbeat    
+  	def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
+  	sendEvent(name: "lastCheckin", value: now)
+
 	if (description.startsWith("Err")) {
 	    results << createEvent(descriptionText:description, displayed:true)
 	} else {
@@ -114,6 +121,7 @@ def parse(String description) {
 			zwaveEvent(cmd, results)
 		}
 	}
+
 	log.debug "'$description' parsed to ${results.inspect()}"
 	return results
 }
