@@ -65,7 +65,7 @@ metadata {
 			state "clear", icon:"", label: 'ALL\nCLEAR'
 			state "smoke", icon:"", label: 'FIRE!\nFIRE!\nFIRE!'
 			state "carbonMonoxide", icon:"", label: 'CARBON\nMONOXIDE'
-			state "tested", icon:"", label: 'ALARM\nTEST\n
+			state "tested", icon:"", label: 'ALARM\nTEST\n'
 		}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
