@@ -39,18 +39,42 @@ metadata {
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
 				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
 			}
+			tileAttribute("device.checkInterval", key: "SECONDARY_CONTROL") {
+				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
+			}
 		}
 
+		valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
+            	state "default", label:'${currentValue}%'+"\n", unit:"", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png", 
+            		backgroundColors: [
+				[value: 0, color: "#ff1800"],
+				[value: 10, color: "#fb854a"],
+				[value: 25, color: "#ceec24"],
+				[value: 50, color: "#71f044"],
+				[value: 75, color: "#33d800"]
+            		]
+		}
+/*
 		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width:2, height:2) {
 			state "battery", label:'${currentValue}%', unit:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
 		}
+*/
+        	standardTile("info", "device.smoke", decoration: "flat", width:2, height:2) {
+			state "clear", icon:"", label: "ALL\nCLEAR"
+			state "smoke", icon:"", label: "FIRE!\nFIRE!\nFIRE!"
+			state "tested", icon:"", label: "ALARM\nTEST"
+		}
+		
+		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
+        	}
 
-        	standardTile("info", "device.smoke", decoration: "flat", width:4, height:2) {
+        	standardTile("status", "device.smoke", decoration: "flat", width:6, height:2) {
 			state "clear", icon:"", label: "CLEAR"
 			state "smoke", icon:"", label: "FIRE! FIRE! FIRE!"
 			state "tested", icon:"", label: "ALARM TEST"
 		}
-		
+
 		multiAttributeTile(name:"smoke2", type:"generic"){
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
 				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Normal.png", backgroundColor:"#359148")
@@ -60,7 +84,7 @@ metadata {
 		}
 
 		main "smoke2"
-		details(["smoke", "battery", "info"])
+		details(["smoke", "battery", "info", "refresh"])
 	}
 }
 
