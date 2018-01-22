@@ -1,8 +1,8 @@
 # FIRST ALERT Smoke & CO Alarms (ZSMOKE & ZCOMBO)
 
-<img src="https://raw.githubusercontent.com/castlecole/customdevices/master/ZSMOKE_Front.png" width="400">        <img src="https://raw.githubusercontent.com/castlecole/customdevices/master/ZCOMBO-G_Front.png" width="400">
+<img src="https://raw.githubusercontent.com/castlecole/customdevices/master/ZSMOKE_Front.png" width="400"><img src="https://raw.githubusercontent.com/castlecole/customdevices/master/ZCOMBO-G_Front.png" width="400">
 
-                         ZSMOKE - Smoke Alarm                        ZCOMBO - Smoke & CO Alarm
+                       ZSMOKE - Smoke Alarm                          ZCOMBO - Smoke & CO Alarm
 
 ## Features
 
