@@ -1,8 +1,8 @@
-# First Alert Smoke Detector and Carbon Monoxide Alarm (ZCOMBO) 
+# First Alert Smoke and Carbon Monoxide Alarm (ZCOMBO) 
 Rest easy knowing that the First Alert Smoke Detector and Carbon Monoxide Alarm (ZCOMBO) will not only alert everyone at home at the first sign of smoke and dangerous carbon monoxide, but also immediately notify family members who may not be home.
 In addition to emitting a loud siren, the First Alert ZCOMBO will send an instant alert to your smartphone so that you can contact family members, neighbors, or the fire department if you're away. By pairing the alarm with a smart outlet, in-wall switches, or light bulbs, you can also trigger the alarm to automatically turn lights on when smoke or carbon monoxide is detected and light a path for family members toward an exit.
 
-image::https://raw.githubusercontent.com/castlecole/customdevices/master/ZWaveFirstAlertZCOMBO.jpg[]
+<img src="https://raw.githubusercontent.com/castlecole/customdevices/master/ZWaveFirstAlertZCOMBO.jpg">
 
 ## To connect the First Alert Smoke Detector and Carbon Monoxide Alarm (ZCOMBO) with the SmartThings Hub
 First, slide the battery tray out of the smoke detector (on the top left side).
