@@ -59,23 +59,17 @@ metadata {
 			state "battery", label:'${currentValue}%', unit:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
 		}
 */
-        	standardTile("info", "device.smoke", decoration: "flat", width:2, height:2) {
-			state "clear", icon:"", label: "ALL\nCLEAR"
-			state "smoke", icon:"", label: "FIRE!\nFIRE!\nFIRE!"
-			state "tested", icon:"", label: "ALARM\nTEST"
+        	valueTile("info", "device.smoke", decoration: "flat", width:2, height:2) {
+			state "clear", icon:"", label: 'ALL\nCLEAR'
+			state "smoke", icon:"", label: 'FIRE!\nFIRE!\nFIRE!'
+			state "tested", icon:"", label: 'ALARM\nTEST'
 		}
 		
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
         	}
 
-        	standardTile("status", "device.smoke", decoration: "flat", width:6, height:2) {
-			state "clear", icon:"", label: "CLEAR"
-			state "smoke", icon:"", label: "FIRE! FIRE! FIRE!"
-			state "tested", icon:"", label: "ALARM TEST"
-		}
-
-		multiAttributeTile(name:"smoke2", type:"generic"){
+ 		multiAttributeTile(name:"smoke2", type:"generic"){
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
 				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Normal.png", backgroundColor:"#359148")
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Fire.png", backgroundColor:"#ed0000")
