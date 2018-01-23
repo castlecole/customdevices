@@ -59,19 +59,15 @@ metadata {
             			]
 		}
 
-		valueTile("info", "device.alarmState", inactiveLabel: true, decoration: "flat", width:2, height:2) {
-			
-			state "clear", icon:"", label: "all"+"\n"+"clear"
-			
-			state "smoke", icon:"", label: "fire!"+"\n"+"fire!"+"\n"+"fire!"
-			
-			state "carbonMonoxide", icon:"", label: "carbon"+"\n"+"monoxide"
-			
-			state "tested", icon:"", label: "alarm"+"\n"+"test\n"
+		standardTile("info", "device.alarmState", inactiveLabel: True, decoration: "flat", width:2, height:2) {
+			state "clear", icon:"", label: "All Clear"
+			state "smoke", icon:"", label: "Fire! Fire! Fire!"
+			state "carbonMonoxide", icon:"", label: "Carbon Monoxide"
+			state "tested", icon:"", label: "Alarm Test"
 		}
 
 		
-		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
 			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
         	}
 
