@@ -66,6 +66,7 @@ metadata {
 			state "tested", icon:"", label: "ALARM\nTEST\n"
 		}
 
+		
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
         	}
