@@ -59,11 +59,15 @@ metadata {
             			]
 		}
 
-		standardTile("info", "device.alarmState", inactiveLabel: true, decoration: "flat", width:2, height:2) {
-			state "clear", icon:"", label: "ALL\nCLEAR"
-			state "smoke", icon:"", label: "FIRE!\nFIRE!\nFIRE!"
-			state "carbonMonoxide", icon:"", label: "CARBON\nMONOXIDE"
-			state "tested", icon:"", label: "ALARM\nTEST\n"
+		valueTile("info", "device.alarmState", inactiveLabel: true, decoration: "flat", width:2, height:2) {
+			
+			state "clear", icon:"", label: "all"+"\n"+"clear"
+			
+			state "smoke", icon:"", label: "fire!"+"\n"+"fire!"+"\n"+"fire!"
+			
+			state "carbonMonoxide", icon:"", label: "carbon"+"\n"+"monoxide"
+			
+			state "tested", icon:"", label: "alarm"+"\n"+"test\n"
 		}
 
 		
