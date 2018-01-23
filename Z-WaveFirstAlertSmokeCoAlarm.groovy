@@ -63,7 +63,7 @@ metadata {
 			state "battery", label:'${currentValue}%', unit:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
 		}
 */
-	        valueTile("info", "device.alarmState", decoration: "flat", width:2, height:2) {
+	        standardTile("info", "device.alarmState", inactiveLabel: true, decoration: "flat", width:2, height:2) {
 			state "clear", icon:"", label: 'ALL\nCLEAR'
 			state "smoke", icon:"", label: 'FIRE!\nFIRE!\nFIRE!'
 			state "carbonMonoxide", icon:"", label: 'CARBON\nMONOXIDE'
