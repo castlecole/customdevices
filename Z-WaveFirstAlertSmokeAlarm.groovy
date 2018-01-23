@@ -1,4 +1,3 @@
-
 /**
  *  Copyright 2015 SmartThings
  *
@@ -57,13 +56,10 @@ metadata {
             		]
 		}
 
-		valueTile("info", "device.smoke", decoration: "flat", width:2, height:2) {
-			
-			state "clear", icon:"", label: "all"+"\n"+"clear"
-			
-			state "smoke", icon:"", label: "fire!"+"\n"+"fire!"+"\n"+"fire!"
-			
-			state "tested", icon:"", label: "ALARM"+"\n"+"TEST"
+		standardTile("info", "device.smoke", inactiveLabel: true, decoration: "flat", width:2, height:2) {
+			state "clear", icon:"", label: "All Clear"
+			state "smoke", icon:"", label: "Fire! Fire! Fire!"
+			state "tested", icon:"", label: "Alarm Test"
 		}
 		
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
