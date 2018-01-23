@@ -56,15 +56,14 @@ metadata {
 				[value: 75, color: "#33d800"]
             		]
 		}
-/*
-		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width:2, height:2) {
-			state "battery", label:'${currentValue}%', unit:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/battery.png"
-		}
-*/
-        	valueTile("info", "device.smoke", decoration: "flat", width:2, height:2) {
-			state "clear", icon:"", label: 'ALL\nCLEAR'
-			state "smoke", icon:"", label: 'FIRE!\nFIRE!\nFIRE!'
-			state "tested", icon:"", label: 'ALARM\nTEST'
+
+		valueTile("info", "device.smoke", decoration: "flat", width:2, height:2) {
+			
+			state "clear", icon:"", label: "all"+"\n"+"clear"
+			
+			state "smoke", icon:"", label: "fire!"+"\n"+"fire!"+"\n"+"fire!"
+			
+			state "tested", icon:"", label: "ALARM"+"\n"+"TEST"
 		}
 		
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
