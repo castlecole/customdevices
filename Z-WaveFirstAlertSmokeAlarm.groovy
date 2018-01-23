@@ -56,13 +56,13 @@ metadata {
             		]
 		}
 
-		standardTile("info", "device.smoke", inactiveLabel: true, decoration: "flat", width:2, height:2) {
+		standardTile("info", "device.smoke", inactiveLabel: True, decoration: "flat", width:2, height:2) {
 			state "clear", icon:"", label: "All Clear"
 			state "smoke", icon:"", label: "Fire! Fire! Fire!"
 			state "tested", icon:"", label: "Alarm Test"
 		}
 		
-		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
 			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
         	}
 
