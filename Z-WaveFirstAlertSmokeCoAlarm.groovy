@@ -38,10 +38,10 @@ metadata {
 	tiles (scale: 2){
 		multiAttributeTile(name:"smoke", type:"generic", width:6, height:4){
 			tileAttribute ("device.alarmState", key: "PRIMARY_CONTROL") {
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear-co0.png", backgroundColor:"#359148")
-				attributeState("smoke", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear-co0.png", backgroundColor:"#ed0000")
-				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco-co0.png", backgroundColor:"#e86d13")
-				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco0.png", backgroundColor:"#e86d13")
+				attributeState("clear", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear-co0.png", backgroundColor:"#359148")
+				attributeState("smoke", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear-co0.png", backgroundColor:"#ed0000")
+				attributeState("carbonMonoxide", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco-co0.png", backgroundColor:"#e86d13")
+				attributeState("tested", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco0.png", backgroundColor:"#e86d13")
 			}
 			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
 				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
