@@ -44,7 +44,7 @@ metadata {
 		state "default", label:'', action:"alarm.test", icon:"st.secondary.test", backgroundColor:"#cccccc"
 	}       
         standardTile("off", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-            state "default", label:"", action:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png"
+		state "default", label:"", action:"alarm.off", icon:"https://raw.githubusercontent.com/castlecole/xiaomi/master/stop-icon.png"
       	}
 	standardTile("blank", "device.alarm", inactiveLabel: true, decoration: "flat", width: 2, height: 2) {
 		state "default", label:'', action:""
