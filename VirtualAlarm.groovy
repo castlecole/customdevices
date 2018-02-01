@@ -27,41 +27,41 @@ metadata {
 
     	tiles(scale: 2) {
 		multiAttributeTile(name:"alarm", type: "lighting", width: 6, height: 4, canChangeIcon: false){
-            		tileAttribute ("device.alarm", key: "PRIMARY_CONTROL") { 
-			attributeState "off", label:'off', action:'alarm.strobe', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#ffffff"
-			attributeState "strobe", label:'strobe!', action:'alarm.siren', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
-			attributeState "siren", label:'siren!', action:'alarm.both', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
-			attributeState "both", label:'alarm!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
-	    	}
-        }
-	standardTile("strobe", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-		state "default", label:'', action:"alarm.strobe", icon:"st.secondary.strobe", backgroundColor:"#cccccc"
-	}
-	standardTile("siren", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-		state "default", label:'', action:"alarm.siren", icon:"st.secondary.siren", backgroundColor:"#cccccc"
-	}       
-	standardTile("test", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-		state "default", label:'', action:"alarm.test", icon:"st.secondary.test", backgroundColor:"#cccccc"
-	}       
-        standardTile("off", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-		state "default", label:"", action:"alarm.off", icon:"https://raw.githubusercontent.com/castlecole/xiaomi/master/stop-icon.png"
-      	}
-	standardTile("blank", "device.alarm", inactiveLabel: true, decoration: "flat", width: 2, height: 2) {
-		state "default", label:'', action:""
-	}	    
-	standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-  	    state "default", label:"", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
-        }
-        multiAttributeTile(name:"alarm2", type: "lighting", width: 6, height: 4, canChangeIcon: false){
-            tileAttribute ("device.alarm", key: "PRIMARY_CONTROL") { 
-		attributeState "off", label:'off', action:'alarm.strobe', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#ffffff"
-		attributeState "strobe", label:'strobe!', action:'alarm.siren', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
-		attributeState "siren", label:'siren!', action:'alarm.both', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
-		attributeState "both", label:'alarm!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
-            }
-	}
-       	main "alarm2"
-	details(["alarm","strobe","siren","test","off", "blank", "refresh"])
+            		tileAttribute ("device.alarm", key: "PRIMARY_CONTROL") {
+				attributeState "off", label:'off', action:'alarm.strobe', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-off-icon.png", backgroundColor:"#ffffff"
+				attributeState "strobe", label:'strobe!', action:'alarm.siren', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-test-icon.png", backgroundColor:"#e86d13"
+				attributeState "siren", label:'siren!', action:'alarm.both', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
+				attributeState "both", label:'alarm!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-strobe-icon.png", backgroundColor:"#e86d13"
+	    		}
+        	}
+		standardTile("strobe", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", label:'', action:"alarm.strobe", icon:"st.secondary.strobe", backgroundColor:"#cccccc"
+		}
+		standardTile("siren", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", label:'', action:"alarm.siren", icon:"st.secondary.siren", backgroundColor:"#cccccc"
+		}       
+		standardTile("test", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", label:'', action:"alarm.test", icon:"st.secondary.test", backgroundColor:"#cccccc"
+		}       
+        	standardTile("off", "device.alarm", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", label:"", action:"alarm.off", icon:"https://raw.githubusercontent.com/castlecole/xiaomi/master/stop-icon.png"
+      		}
+		standardTile("blank", "device.alarm", inactiveLabel: true, decoration: "flat", width: 2, height: 2) {
+			state "default", label:'', action:""
+		}	    
+		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+  			state "default", label:"", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
+        	}
+        	multiAttributeTile(name:"alarm2", type: "lighting", width: 6, height: 4, canChangeIcon: false){
+        	    	tileAttribute ("device.alarm", key: "PRIMARY_CONTROL") { 
+				attributeState "off", label:'off', action:'alarm.strobe', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-off-icon.png", backgroundColor:"#ffffff"
+				attributeState "strobe", label:'strobe!', action:'alarm.siren', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-test-icon.png", backgroundColor:"#e86d13"
+				attributeState "siren", label:'siren!', action:'alarm.both', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
+				attributeState "both", label:'alarm!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-strobe-icon.png", backgroundColor:"#e86d13"
+            		}
+		}
+	       	main "alarm2"
+		details(["alarm","strobe","siren","test","off", "blank", "refresh"])
 	}
 }
 
