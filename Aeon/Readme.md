@@ -28,13 +28,13 @@ This repository contains device handlers and SmartApps for use with Samsung's [S
 
 ## Device Handlers
 
-#### [Aeon Home Energy Meter (GEN2 - UK - 1 Clamp)](https://raw.githubusercontent.com/castlecole/master/customdevices/Aeon/z-WaveAeonHomeEnergyMeter.groovy):
+#### [Aeon Home Energy Meter (GEN2 - UK - 1 Clamp)](https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/z-WaveAeonHomeEnergyMeter.groovy):
  - This device handler is written specifically for the Aeon Home Energy Meter Gen2 UK version, with a single clamp.
  - It supports live reporting of energy, power, current, and voltage, as well as energy and cost statistics over multiple pre-defined periods.
  
-#### [Z-Wave Tweaker](https://raw.githubusercontent.com/castlecole/master/customdevices/Aeon/Z-WaveTweaker.groovy):
+#### [Z-Wave Tweaker](https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/Z-WaveTweaker.groovy):
  - A SmartThings device handler to assist with interrogating and tweaking Z-Wave devices. Useful for end-users and SmartThings developers.  grafana_daily_usage.png 
-   <img src="https://raw.githubusercontent.com/codersaur/castlecole/master/customdevices/Aeon/screenshots/zwt-ss-tiles-main.png" width="200">
+   <img src="https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/screenshots/zwt-ss-tiles-main.png" width="200">
 
 ### Device Handler Installation Procedure
 
