@@ -1,7 +1,5 @@
 # SmartThings
-https://github.com/codersaur/SmartThings
 
-Copyright (c) 2017 [David Lomas](https://github.com/codersaur)
 
 ## Overview
 
@@ -9,11 +7,7 @@ This repository contains device handlers and SmartApps for use with Samsung's [S
 
 ## SmartApps
 
-#### [Evohome (Connect) - BETA](https://github.com/codersaur/SmartThings/tree/master/smartapps/evohome-connect):
- - This SmartApp connects your Honeywell Evohome System to SmartThings.
- - Note, the Evohome Heating Zone device handler (below) must also be installed.
-
-#### [InfluxDB Logger](https://github.com/codersaur/SmartThings/tree/master/smartapps/influxdb-logger):
+#### InfluxDB Logger:
  - This SmartApp logs SmartThings device attributes to an [InfluxDB](https://influxdata.com/) database.
 
 ### SmartApp Installation Procedure
@@ -34,42 +28,13 @@ This repository contains device handlers and SmartApps for use with Samsung's [S
 
 ## Device Handlers
 
-#### [Aeon Home Energy Meter (GEN2 - UK - 1 Clamp)](https://github.com/codersaur/SmartThings/tree/master/devices/aeon-home-energy-meter):
+#### [Aeon Home Energy Meter (GEN2 - UK - 1 Clamp)](https://raw.githubusercontent.com/castlecole/master/customdevices/Aeon/z-WaveAeonHomeEnergyMeter.groovy):
  - This device handler is written specifically for the Aeon Home Energy Meter Gen2 UK version, with a single clamp.
  - It supports live reporting of energy, power, current, and voltage, as well as energy and cost statistics over multiple pre-defined periods.
-
-#### [Evohome Heating Zone - BETA](https://github.com/codersaur/SmartThings/tree/master/devices/evohome):
- - This device handler is required for the Evohome (Connect) SmartApp.
-
-#### [Fibaro Dimmer 2 (FGD-212)](https://github.com/codersaur/SmartThings/tree/master/devices/fibaro-dimmer-2):
- - An advanced device handler for the Fibaro Dimmer 2 (FGD-212) Z-Wave Dimmer, with support for full parameter synchronisation, multi-channel device associations, protection modes, fault reporting, and advanced logging options.
- - The _Nightmode_ function forces the dimmer to switch on at a specific level (e.g. low-level during the night). It can be enabled/disabled manually using the _Nightmode_ tile, or scheduled from the device's settings.  
-   <img src="https://raw.githubusercontent.com/codersaur/SmartThings/master/devices/fibaro-dimmer-2/screenshots/fd2-ss-tiles-on.png" width="200">
-
-#### [Fibaro Flood Sensor (FGFS-101)](https://github.com/codersaur/SmartThings/tree/master/devices/fibaro-flood-sensor):
- - An advanced SmartThings device handler for the Fibaro Flood Sensor (FGFS-101) (EU), with support for full parameter synchronisation, multi-channel device associations, and advanced logging options.  
-   <img src="https://raw.githubusercontent.com/codersaur/SmartThings/master/devices/fibaro-flood-sensor/screenshots/ffs-ss-tiles-wet.png" width="200">
-
-#### [Fibaro RGBW Controller (FGRGBWM-441)](https://github.com/codersaur/SmartThings/tree/master/devices/fibaro-rgbw-controller):
- - This device handler is written specifically for the Fibaro RGBW Controller (FGRGBWM-441).
- - It extends the native SmartThings device handler to support editing the device's parameters from the SmartThings GUI, and to support the use of one or more of the controller's channels in IN/OUT mode (i.e. analog sensor inputs).  
-   <img src="https://raw.githubusercontent.com/codersaur/SmartThings/master/devices/fibaro-rgbw-controller/screenshots/screenshot_rgbw.png" width="200">
  
-#### [GreenWave PowerNode (Single) (NS210-G-EN)](https://github.com/codersaur/SmartThings/tree/master/devices/greenwave-powernode-single):
-  - An advanced SmartThings device handler for the GreenWave PowerNode (Single socket) Z-Wave power outlet, with support for power and energy reporting, the _Room Colour Wheel_, local and RF protection modes, an _Auto-off Timer_, full parameter synchronisation, and advanced logging options.  
-   <img src="https://raw.githubusercontent.com/codersaur/SmartThings/master/devices/greenwave-powernode-single/screenshots/gwpn-ss-tiles-main.png" width="200">
-
-#### [Philio Dual Relay (PAN04)](https://github.com/codersaur/SmartThings/tree/master/devices/philio-dual-relay):
- - This device handler is written specifically for the Philio Dual Relay (PAN04), when used as a single switch/relay only.
- - It supports live reporting of energy, power, current, voltage, and power factor,  as well as energy and cost statistics over multiple pre-defined periods.
- 
-#### [TKB Metering Switch (TZ88E-GEN5)](https://github.com/codersaur/SmartThings/tree/master/devices/tkb-metering-switch):
- - This device handler is written specifically for the TKB Metering Switch (TZ88E-GEN5).
- - It supports live reporting of energy, power, current, voltage, and power factor,  as well as energy and cost statistics over multiple pre-defined periods.
- 
-#### [Z-Wave Tweaker](https://github.com/codersaur/SmartThings/tree/master/devices/zwave-tweaker):
- - A SmartThings device handler to assist with interrogating and tweaking Z-Wave devices. Useful for end-users and SmartThings developers.  
-   <img src="https://raw.githubusercontent.com/codersaur/SmartThings/master/devices/zwave-tweaker/screenshots/zwt-ss-tiles-main.png" width="200">
+#### [Z-Wave Tweaker](https://raw.githubusercontent.com/castlecole/master/customdevices/Aeon/Z-WaveTweaker.groovy):
+ - A SmartThings device handler to assist with interrogating and tweaking Z-Wave devices. Useful for end-users and SmartThings developers.  grafana_daily_usage.png 
+   <img src="https://raw.githubusercontent.com/codersaur/castlecole/master/customdevices/Aeon/screenshots/zwt-ss-tiles-main.png" width="200">
 
 ### Device Handler Installation Procedure
 
