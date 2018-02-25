@@ -1,11 +1,15 @@
-# SmartThings
 
+# SmartThings
 
 ## Overview
 
 This repository contains device handlers and SmartApps for use with Samsung's [SmartThings](http://www.smartthings.com) home automation platform.
 
 ## SmartApps
+
+#### [Evohome (Connect) - BETA](https://github.com/castlecole/customdevices/master/Honeywell/HoneywellEvohomeAppConnect.groovy):
+ - This SmartApp connects your Honeywell Evohome System to SmartThings.
+ - Note, the Evohome Heating Zone device handler (below) must also be installed.
 
 #### InfluxDB Logger:
  - This SmartApp logs SmartThings device attributes to an [InfluxDB](https://influxdata.com/) database.
@@ -32,6 +36,9 @@ This repository contains device handlers and SmartApps for use with Samsung's [S
  - This device handler is written specifically for the Aeon Home Energy Meter Gen2 UK version, with a single clamp.
  - It supports live reporting of energy, power, current, and voltage, as well as energy and cost statistics over multiple pre-defined periods.
  
+#### [Evohome Heating Zone - BETA](https://github.com/castlecole/customdevices/master/Honeywell/HoneywellEvohomeHeatingZone.groovy):
+ - This device handler is required for the Evohome (Connect) SmartApp.
+
 #### [Z-Wave Tweaker](https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/Z-WaveTweaker.groovy):
  - A SmartThings device handler to assist with interrogating and tweaking Z-Wave devices. Useful for end-users and SmartThings developers.  grafana_daily_usage.png 
    <img src="https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/screenshots/zwt-ss-tiles-main.png" width="200">
