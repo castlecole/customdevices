@@ -28,7 +28,7 @@ This repository contains device handlers and SmartApps for use with Samsung's [S
 
 ## Device Handlers
 
-#### [Aeon Home Energy Meter (GEN2 - UK - 1 Clamp)](https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/z-WaveAeonHomeEnergyMeter.groovy):
+#### [Aeon Home Energy Meter (GEN2 - UK - 1 Clamp)](https://raw.githubusercontent.com/castlecole/customdevices/master/Aeon/Z-WaveAeonHomeEnergyMeter.groovy):
  - This device handler is written specifically for the Aeon Home Energy Meter Gen2 UK version, with a single clamp.
  - It supports live reporting of energy, power, current, and voltage, as well as energy and cost statistics over multiple pre-defined periods.
  
