@@ -62,7 +62,7 @@
  *
  */
 metadata {
-	definition (name: "My Aeon Home Energy Monitor Gen1", namespace: "jscgs350", author: "jscgs350")
+	definition (name: "Z-Wave Aeon HEM Gen1", namespace: "castlecole", author: "jscgs350")
 	{
 		capability "Energy Meter"
 		capability "Power Meter"
@@ -80,8 +80,8 @@ metadata {
 		attribute "resetMessage", "string"		// Used for messages of what was reset (min, max, energy, or all values)
 		attribute "kwhCosts", "string"			// Used to show energy costs since last reset
 		attribute "batteryStatus", "string"
-        attribute "kWhLastReset", "number"
-        attribute "CostLastReset", "number"
+        	attribute "kWhLastReset", "number"
+        	attribute "CostLastReset", "number"
 
 		command "resetkwh"
 		command "resetmin"
