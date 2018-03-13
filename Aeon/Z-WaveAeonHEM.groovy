@@ -61,6 +61,11 @@
  *  10-26-2017 : Added 2 new attributes to capture kWh and cost data before they're reset in case someone needs to refer back to them for any reason.  These can be seen in the IDE and in the Recently Tab in the mobile app.
  *
  */
+
+def version() {
+	return "v1 (20170313)\nZ-Wave Aeon HEM Gen1   Firmware: v1.67"
+}
+
 metadata {
 	definition (name: "Z-Wave Aeon HEM Gen1", namespace: "castlecole", author: "jscgs350")
 	{
@@ -91,18 +96,20 @@ metadata {
 		fingerprint deviceId: "0x2101", inClusters: " 0x70,0x31,0x72,0x86,0x32,0x80,0x85,0x60"
 	}
 
-	// tile definitions
+	// tile definitions   https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png
 	tiles(scale: 2) {
 		multiAttributeTile(name:"currentWATTS", type: "generic", width: 6, height: 4, decoration: "flat"){
 			tileAttribute ("device.currentWATTS", key: "PRIMARY_CONTROL") {
-				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/constjs/jcdevhandlers/master/img/device-activity-tile@2x.png", backgroundColor: "#79b821"
+				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/electricity.png", backgroundColor: "#79b821"
 			}
 			tileAttribute ("device.batteryStatus", key: "SECONDARY_CONTROL") {
-				attributeState "batteryStatus", label:'${currentValue}', icon:"https://raw.githubusercontent.com/constjs/jcdevhandlers/master/img/Battery-Charge-icon.png"
+				attributeState "batteryStatus", label:'${currentValue}', icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png"
 			}
 		}
-		standardTile("iconTile", "iconTile", inactiveLabel: false, width: 1, height: 1) {
-			state "default", icon:"https://raw.githubusercontent.com/constjs/jcdevhandlers/master/img/device-activity-tile@2x.png"
+		multiAttributeTile(name:"currentWATTS2", type: "generic", width: 6, height: 4, decoration: "flat"){
+			tileAttribute ("device.currentWATTS", key: "PRIMARY_CONTROL") {
+				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Energy0.png", backgroundColor: "#79b821"
+			}
 		}
 		valueTile("statusText", "statusText", inactiveLabel: false, decoration: "flat", width: 5, height: 1) {
 			state "statusText", label:'${currentValue}', backgroundColor:"#ffffff"
@@ -126,7 +133,7 @@ metadata {
 			state "default", label:'Reset Energy', action:"resetkwh", icon:"st.secondary.refresh-icon"
 		}
 		standardTile("refresh", "device.refresh", width: 3, height: 2, inactiveLabel: false, decoration: "flat") {
-			state "default", label:'Refresh', action:"refresh", icon:"st.secondary.refresh-icon"
+			state "default", label:'Refresh', action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
 		}
 		standardTile("configure", "device.configure", width: 3, height: 2, inactiveLabel: false, decoration: "flat") {
 			state "configure", label:'', action:"configure", icon:"st.secondary.configure"
@@ -135,14 +142,14 @@ metadata {
 			state "history", label:'${currentValue}'
 		}
 
-		main (["currentWATTS"])
+		main (["currentWATTS2"])
 		details(["currentWATTS", "currentKWH", "kwhCosts", "history", "resetmin", "resetmax", "resetkwh", "refresh", "configure"])
 	}
 
 	preferences {
 		input "displayEvents", "boolean", title: "Display all power and energy events in the Recently tab and the device's event log?",	defaultValue: false, required: false, displayDuringSetup: true
 		input "displayBatteryLevel", "boolean", title: "Display battery level on main tile and Recently tab?", defaultValue: true, required: false, displayDuringSetup: true
-        input "kWhCost", "string", title: "Enter your cost per kWh (or just use the default, or use 0 to not calculate):", defaultValue: 0.16, required: false, displayDuringSetup: true
+                input "kWhCost", "string", title: "Enter your cost per kWh (or just use the default, or use 0 to not calculate):", defaultValue: 0.16, required: false, displayDuringSetup: true
 		input "wattsLimit", "number", title: "Sometimes the HEM will send a wildly large watts value. What limit should be in place so that it's not processed? (in watts)", defaultValue: 20000, required: false, displayDuringSetup: true
 		input "reportType", "number", title: "ReportType: Send watt/kWh data on a time interval (0), or on a change in wattage (1)? Enter a 0 or 1:", defaultValue: 1, range: "0..1", required: false, displayDuringSetup: true
 		input "wattsChanged", "number", title: "For ReportType = 1, Don't send unless watts have changed by this many watts: (range 0 - 32,000W)", defaultValue: 50, range: "0..32000", required: false, displayDuringSetup: true
@@ -151,6 +158,7 @@ metadata {
 		input "secondsKwh", "number", title: "For ReportType = 0, Send kWh data every how many seconds? (range 0 - 65,000 seconds)", defaultValue: 60, range: "0..65000", required: false, displayDuringSetup: true
 		input "secondsBattery", "number", title: "If the HEM has batteries installed, send battery data every how many seconds? (range 0 - 65,000 seconds)", defaultValue: 900, range: "0..65000", required: false, displayDuringSetup: true
 		input "decimalPositions", "number", title: "How many decimal positions do you want watts AND kWh to display? (range 0 - 3)", defaultValue: 3, range: "0..3", required: false, displayDuringSetup: true
+		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
 }
 
