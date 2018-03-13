@@ -100,10 +100,10 @@ metadata {
 	tiles(scale: 2) {
 		multiAttributeTile(name:"currentWATTS", type: "generic", width: 6, height: 4, decoration: "flat"){
 			tileAttribute ("device.currentWATTS", key: "PRIMARY_CONTROL") {
-				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/electricity.png", backgroundColor: "#79b821"
+				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/electricity0.png", backgroundColor: "#79b821"
 			}
 			tileAttribute ("device.batteryStatus", key: "SECONDARY_CONTROL") {
-				attributeState "batteryStatus", label:'${currentValue}', icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png"
+				attributeState "batteryStatus", label:'${currentValue}', icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery0.png"
 			}
 		}
 		multiAttributeTile(name:"currentWATTS2", type: "generic", width: 6, height: 4, decoration: "flat"){
