@@ -76,7 +76,6 @@ metadata {
 		capability "Refresh"
 		capability "Polling"
 		capability "Battery"
-//		capability "Health Check"
 
 		attribute "currentKWH", "string"		// Used to show current kWh since last reset
 		attribute "currentWATTS", "string"		// Used to show current watts being used on the main tile
@@ -87,6 +86,14 @@ metadata {
 		attribute "batteryStatus", "string"
         	attribute "kWhLastReset", "number"
         	attribute "CostLastReset", "number"
+
+	attribute "energyDisp", "string"
+        attribute "energyOne", "string"
+        attribute "energyTwo", "string"
+
+        attribute "powerDisp", "string"
+        attribute "powerOne", "string"
+        attribute "powerTwo", "string"
 
 		command "resetkwh"
 		command "resetmin"
@@ -100,7 +107,16 @@ metadata {
 	tiles(scale: 2) {
 		multiAttributeTile(name:"currentWATTS", type: "generic", width: 6, height: 4, decoration: "flat"){
 			tileAttribute ("device.currentWATTS", key: "PRIMARY_CONTROL") {
-				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/electricity0.png", backgroundColor: "#79b821"
+				attributeState "default", label: '${currentValue}W', icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/electricity0.png",
+					backgroundColors:[
+						[value: "0 Watts", color: "#153591"],
+						[value: "500 Watts", color: "#1e9cbb"],
+						[value: "1000 Watts", color: "#90d2a7"],
+						[value: "1500 Watts", color: "#44b621"],
+						[value: "2000 Watts", color: "#f1d801"],
+						[value: "2500 Watts", color: "#d04e00"],
+						[value: "3000 Watts", color: "#bc2323"]
+					]
 			}
 			tileAttribute ("device.batteryStatus", key: "SECONDARY_CONTROL") {
 				attributeState "batteryStatus", label:'${currentValue}', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Battery0.png"
@@ -132,18 +148,20 @@ metadata {
 		standardTile("resetkwh", "device.resetkwh", width: 2, height: 2, inactiveLabel: false, decoration: "flat") {
 			state "default", label:'Reset Energy', action:"resetkwh", icon:"st.secondary.refresh-icon"
 		}
-		standardTile("refresh", "device.refresh", width: 3, height: 2, inactiveLabel: false, decoration: "flat") {
+		standardTile("refresh", "device.refresh", width: 2, height: 2, inactiveLabel: false, decoration: "flat") {
 			state "default", label:'', action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
 		}
-		standardTile("configure", "device.configure", width: 3, height: 2, inactiveLabel: false, decoration: "flat") {
+
+/*		standardTile("configure", "device.configure", width: 3, height: 2, inactiveLabel: false, decoration: "flat") {
 			state "configure", label:'', action:"configure", icon:"st.secondary.configure"
 		}
+*/
 		valueTile("history", "device.history", decoration:"flat",width: 6, height: 2) {
 			state "history", label:'${currentValue}'
 		}
 
 		main (["currentWATTS2"])
-		details(["currentWATTS", "currentKWH", "kwhCosts", "history", "resetmin", "resetmax", "resetkwh", "refresh", "configure"])
+		details(["currentWATTS", "currentKWH", "kwhCosts", "history", "resetmin", "resetmax", "resetkwh", "refresh"])
 	}
 
 	preferences {
@@ -172,14 +190,12 @@ def updated() {
 }
 
 def parse(String description) {
-//	log.debug "Parse received ${description}"
+
 	def result = null
 	def cmd = zwave.parse(description, [0x31: 1, 0x32: 1, 0x60: 3, 0x80: 1])
-//	log.debug "Parse returned ${cmd}"
 	if (cmd) {
 		result = createEvent(zwaveEvent(cmd))
 	}
-//	if (result) log.debug "Result returned ${result}"
 
 	if (state.displayBattery) {
 		def batteryStatusmsg = "USB power, batteries at ${device.currentState('battery')?.value}%"
@@ -255,17 +271,17 @@ def zwaveEvent(physicalgraph.zwave.commands.meterv1.MeterReport cmd) {
 						def dispLowValue = dispValue+"w on "+timeString
 						sendEvent(name: "minWATTS", value: dispLowValue as String, unit: "", displayed: false)
 						state.powerLow = newValue
-                        def historyDisp = ""
-					    historyDisp = "Minimum/Maximum Readings as of ${timeString}\n------------------------------------------------------\nPower Low : ${device.currentState('minWATTS')?.value}\nPower High : ${device.currentState('maxWATTS')?.value}\nMessages : ${device.currentState('resetMessage')?.value}"
-					    sendEvent(name: "history", value: historyDisp, displayed: false)
+                        			def historyDisp = ""
+					    	historyDisp = "Minimum/Maximum Readings as of ${timeString}\n------------------------------------------------------\nPower Low : ${device.currentState('minWATTS')?.value}\nPower High : ${device.currentState('maxWATTS')?.value}\nMessages : ${device.currentState('resetMessage')?.value}"
+					    	sendEvent(name: "history", value: historyDisp, displayed: false)
 					}
 					if (newValue > state.powerHigh) {
 						def dispHighValue = dispValue+"w on "+timeString
-                        def historyDisp = ""
+                        			def historyDisp = ""
 						sendEvent(name: "maxWATTS", value: dispHighValue as String, unit: "", displayed: false)
 						state.powerHigh = newValue
-					    historyDisp = "Minimum/Maximum Readings as of ${timeString}\n------------------------------------------------------\nPower Low : ${device.currentState('minWATTS')?.value}\nPower High : ${device.currentState('maxWATTS')?.value}\nMessages : ${device.currentState('resetMessage')?.value}"
-					    sendEvent(name: "history", value: historyDisp, displayed: false)
+					    	historyDisp = "Minimum/Maximum Readings as of ${timeString}\n------------------------------------------------------\nPower Low : ${device.currentState('minWATTS')?.value}\nPower High : ${device.currentState('maxWATTS')?.value}\nMessages : ${device.currentState('resetMessage')?.value}"
+					    	sendEvent(name: "history", value: historyDisp, displayed: false)
 					}
 					sendEvent(name: "currentWATTS", value: dispValue as String, unit: "", displayed: false)
 					state.powerValue = newValue
@@ -285,7 +301,7 @@ def zwaveEvent(physicalgraph.zwave.commands.batteryv1.BatteryReport cmd) {
 		def map = [:]
 		map.name = "battery"
 		map.unit = "%"
-        map.displayed = true
+        	map.displayed = true
 		if (cmd.batteryLevel == 0xFF) { // low battery message from device
 			map.value = 1
 			map.isStateChange = true
@@ -293,18 +309,18 @@ def zwaveEvent(physicalgraph.zwave.commands.batteryv1.BatteryReport cmd) {
 			map.value = cmd.batteryLevel
 			map.isStateChange = true
 		}
-	sendEvent(name: "battery", value: map.value as String, displayed: true)
-	return map
+		sendEvent(name: "battery", value: map.value as String, displayed: true)
+		return map
 	} else {
 		def map = [:]
 		map.name = "battery"
 		map.unit = "%"
-        map.value = 99
-        map.displayed = false
-        map.isStateChange = true
-        sendEvent(name: "battery", value: map.value as String, displayed: false)
+        	map.value = 99
+        	map.displayed = false
+        	map.isStateChange = true
+        	sendEvent(name: "battery", value: map.value as String, displayed: false)
 		return map
-    }
+    	}
 }
 
 def zwaveEvent(physicalgraph.zwave.Command cmd) {
@@ -333,8 +349,9 @@ def ping() {
 }
 
 def resetkwh() {
-	log.debug "${device.name} reset kWh/Cost values"
-	def timeString = new Date().format("MM-dd-yy h:mm a", location.timeZone)
+    
+    log.debug "${device.name} reset kWh/Cost values"
+    def timeString = new Date().format("MM-dd-yy h:mm a", location.timeZone)
     def resetDisp = ""
     resetDisp = "kWh value at time of last reset was ${device.currentState('currentKWH')?.value}"
     sendEvent(name: "kWhLastReset", value: resetDisp, displayed: true)
@@ -347,16 +364,17 @@ def resetkwh() {
     historyDisp = "Minimum/Maximum Readings as of ${timeString}\n------------------------------------------------------\nPower Low : ${device.currentState('minWATTS')?.value}\nPower High : ${device.currentState('maxWATTS')?.value}\nMessages : ${device.currentState('resetMessage')?.value}"
     sendEvent(name: "history", value: historyDisp, displayed: false)
     state.energyValue = 0
-	def cmd = delayBetween( [
-		zwave.meterV2.meterReset().format(),
-		zwave.meterV2.meterGet(scale: 0).format(),
-		zwave.meterV2.meterGet(scale: 2).format()
+    def cmd = delayBetween( [
+	zwave.meterV2.meterReset().format(),
+	zwave.meterV2.meterGet(scale: 0).format(),
+	zwave.meterV2.meterGet(scale: 2).format()
 	])
-	cmd
+    cmd
 }
 
 def resetmin() {
-	log.debug "${device.name} reset minimum watts value"
+
+    log.debug "${device.name} reset minimum watts value"
     def historyDisp = ""
 	state.powerLow = 99999
 	def timeString = new Date().format("MM-dd-yy h:mm a", location.timeZone)
@@ -368,11 +386,12 @@ def resetmin() {
 		zwave.meterV2.meterGet(scale: 0).format(),
 		zwave.meterV2.meterGet(scale: 2).format()
 	])
-	cmd
+    cmd
 }
 
 def resetmax() {
-	log.debug "${device.name} reset maximum watts value"
+	
+    log.debug "${device.name} reset maximum watts value"
     def historyDisp = ""
 	state.powerHigh = 0
 	def timeString = new Date().format("MM-dd-yy h:mm a", location.timeZone)
@@ -384,11 +403,12 @@ def resetmax() {
 		zwave.meterV2.meterGet(scale: 0).format(),
 		zwave.meterV2.meterGet(scale: 2).format()
 	])
-	cmd
+    cmd
 }
 
 def resetMeter() {
-	log.debug "Resetting all home energy meter values..."
+	
+    log.debug "Resetting all home energy meter values..."
     def resetDisp = ""
     resetDisp = "kWh value at time of last reset was ${device.currentState('currentKWH')?.value}"
     sendEvent(name: "kWhLastReset", value: resetDisp, displayed: true)
@@ -411,10 +431,11 @@ def resetMeter() {
 		zwave.meterV2.meterGet(scale: 0).format(),
 		zwave.meterV2.meterGet(scale: 2).format()
 	])
-	cmd
+    cmd
 }
 
 def configure() {
+	
 	log.debug "${device.name} configuring..."
 
 	def cmd = delayBetween([
