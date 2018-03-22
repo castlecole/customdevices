@@ -59,9 +59,9 @@ metadata {
 	tiles (scale: 2){
 		multiAttributeTile(name:"smoke", type:"generic", width:6, height:4){
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
-				attributeState("clear", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#359148")
-				attributeState("detected", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
-				attributeState("tested", label:"", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#359148")
+				attributeState("detected", label:"SMOKE DETECTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
+				attributeState("tested", label:"TESTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
 			}
 			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
 				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
@@ -93,6 +93,10 @@ metadata {
 			state "tested", icon:"", label: "Alarm Test"
 		}
 		
+		valueTile("blank", "", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+            		state "default", label:""
+		}
+
         	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 2) {
             		state "batteryRuntime", label:'Battery Changed: ${currentValue}'
         	}
@@ -110,11 +114,22 @@ metadata {
 		}
 
 		main "smoke2"
-		details(["smoke", "battery", "info", "refresh"])
+		details(["smoke", "battery", "lastSmoke", "lastTested", "blank", "batteryRuntime", "refresh"])
 	}
 }
 
+//Reset the date displayed in Battery Changed tile to current date
+def resetBatteryRuntime(paired) {
+
+	def now = formatDate(true)
+	def newlyPaired = paired ? " for newly paired sensor" : ""
+	sendEvent(name: "batteryRuntime", value: now)
+	log.debug "${device.displayName}: Setting Battery Changed to current date${newlyPaired}"
+}
+
 def installed() {
+	if (!batteryRuntime) resetBatteryRuntime(true)
+
 	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
 	def cmds = []
@@ -123,7 +138,9 @@ def installed() {
 }
 
 def updated() {
-// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
+	if (!batteryRuntime) resetBatteryRuntime(true)
+
+	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
 }
 
@@ -148,15 +165,25 @@ def parse(String description) {
 	return results
 }
 
+
 def createSmokeEvents(name, results) {
 	def text = null
+
+	//  Times for events
+  	def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
+	def nowDate = new Date(now).getTime()
+
 	switch (name) {
 		case "smoke":
+			sendEvent(name: "lastSmoke", value: now, displayed: false)
+			sendEvent(name: "lastSmokeDate", value: nowDate, displayed: false)
 			text = "$device.displayName smoke was detected!"
 			// these are displayed:false because the composite event is the one we want to see in the app
 			results << createEvent(name: "smoke",          value: "detected", descriptionText: text)
 			break
 		case "tested":
+			sendEvent(name: "lastTested", value: now, displayed: false)
+			sendEvent(name: "lastTestedDate", value: nowDate, displayed: false)
 			text = "$device.displayName was tested"
 			results << createEvent(name: "smoke",          value: "tested", descriptionText: text)
 			break
@@ -166,7 +193,7 @@ def createSmokeEvents(name, results) {
 			name = "clear"
 			break
 		case "testClear":
-			text = "$device.displayName test cleared"
+			text = "$device.displayName test finished"
 			results << createEvent(name: "smoke",          value: "clear", descriptionText: text)
 			name = "clear"
 			break
@@ -200,6 +227,7 @@ def zwaveEvent(physicalgraph.zwave.commands.alarmv2.AlarmReport cmd, results) {
 			}
 
 			// Check battery if we don't have a recent battery event
+			if (!batteryRuntime) resetBatteryRuntime(true)
 			if (!state.lastbatt || (now() - state.lastbatt) >= 48*60*60*1000) {
 				results << response(zwave.batteryV1.batteryGet())
 			}
