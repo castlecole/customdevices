@@ -23,6 +23,7 @@ metadata {
 		capability "Sensor"
 		capability "Battery"
 		capability "Health Check"
+		capability "Refresh"
 		attribute  "lastTested", "String"
 		attribute  "lastTestedDate", "Date"
 		attribute  "lastCheckinDate", "Date"		
@@ -177,6 +178,7 @@ def parse(String description) {
 	def nowDate = new Date(now).getTime()
 
   	sendEvent(name: "lastCheckin", value: now)
+
 	
 	if (description.startsWith("Err")) {
 	    results << createEvent(descriptionText:description, displayed:true)
@@ -190,6 +192,17 @@ def parse(String description) {
 	return results
 }
 
+def refresh() {
+
+	If (lastTested == null){
+		lastTested = "Last Tested:\n Never"
+	}
+	
+	If (lastSmoke == null){
+		lastSmoke = "Last Smoke Detected:\n Never"
+	}
+
+}
 
 def createSmokeEvents(name, results) {
 	def text = null
