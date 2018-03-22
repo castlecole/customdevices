@@ -31,7 +31,8 @@ metadata {
 		attribute  "lastSmokeDate", "Date"
 		attribute  "batteryRuntime", "String"
 
-
+		command "resetBatteryRuntime"
+		
 		fingerprint deviceId: "0xA100", inClusters: "0x20,0x80,0x70,0x85,0x71,0x72,0x86"
 		fingerprint mfr:"0138", prod:"0001", model:"0001", deviceJoinName: "First Alert Smoke Detector - Custom"
 	}
@@ -49,12 +50,8 @@ metadata {
 		input description: "", type: "paragraph", element: "paragraph", title: "DATE & CLOCK"    
 		input name: "dateformat", type: "enum", title: "Set Date Format\nUS (MDY) - UK (DMY) - Other (YMD)", description: "Date Format", options:["US","UK","Other"]
 		input name: "clockformat", type: "bool", title: "Use 24 hour clock?"
-		//Battery Reset Config
-		input description: "If you have installed a new battery, the toggle below will reset the Changed Battery date to help remember when it was changed.", type: "paragraph", element: "paragraph", title: "CHANGED BATTERY DATE RESET"
-		input name: "battReset", type: "bool", title: "Battery Changed?", description: ""
 		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
-
 
 	tiles (scale: 2){
 		multiAttributeTile(name:"smoke", type:"generic", width:6, height:4){
@@ -97,8 +94,12 @@ metadata {
             		state "default", label:""
 		}
 
-        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 1) {
-            		state "batteryRuntime", label:'Battery Changed: ${currentValue}'
+//        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 1) {
+//            		state "batteryRuntime", label:'Battery Changed: ${currentValue}'
+//        	}
+
+        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+            		state "batteryRuntime", label:'Battery Changed (tap to reset):\n ${currentValue}', unit:"", action:"resetBatteryRuntime"
         	}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
@@ -119,6 +120,12 @@ metadata {
 }
 
 //Reset the date displayed in Battery Changed tile to current date
+def resetBatteryRuntime() {
+    def now = new Date().format("MMM dd yyyy", location.timeZone)
+    sendEvent(name: "batteryRuntime", value: now)
+}
+
+/*
 def resetBatteryRuntime(paired) {
 
 	def now = formatDate(true)
@@ -126,6 +133,7 @@ def resetBatteryRuntime(paired) {
 	sendEvent(name: "batteryRuntime", value: now)
 	log.debug "${device.displayName}: Setting Battery Changed to current date${newlyPaired}"
 }
+*/
 
 def installed() {
 	if (!batteryRuntime) resetBatteryRuntime(true){
