@@ -138,7 +138,11 @@ def installed() {
 }
 
 def updated() {
-	if (!batteryRuntime) resetBatteryRuntime(true)
+
+	if(battReset) {
+		resetBatteryRuntime()
+		device.updateSetting("battReset", false)
+	}
 
 	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
