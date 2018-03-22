@@ -194,11 +194,11 @@ def parse(String description) {
 
 def refresh() {
 
-	If (lastTested == null){
+	If (lastTested == ""){
 		lastTested = "Last Tested:\n Never"
 	}
 	
-	If (lastSmoke == null){
+	If (lastSmoke == ""){
 		lastSmoke = "Last Smoke Detected:\n Never"
 	}
 
