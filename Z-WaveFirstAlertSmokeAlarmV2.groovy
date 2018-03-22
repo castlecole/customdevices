@@ -78,7 +78,7 @@ metadata {
 		}
 
 		valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-        		state "default", label:'Last GAS Detected:\n ${currentValue}'
+        		state "default", label:'Last Smoke Detected:\n ${currentValue}'
 		}
 
 		valueTile("lastTested", "device.lastTested", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
@@ -195,11 +195,11 @@ def parse(String description) {
 def refresh() {
 
 	If (lastTested == ""){
-		lastTested = "Last Tested:\n Never"
+		sendEvent(name: "lastTested", value: "Never", displayed: false)
 	}
 	
 	If (lastSmoke == ""){
-		lastSmoke = "Last Smoke Detected:\n Never"
+		sendEvent(name: "lastSmoke", value: "Never", displayed: false)
 	}
 
 	// Clear smoke in case they pulled batteries and we missed the clear msg
