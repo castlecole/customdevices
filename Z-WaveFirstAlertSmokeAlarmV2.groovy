@@ -128,7 +128,9 @@ def resetBatteryRuntime(paired) {
 }
 
 def installed() {
-	if (!batteryRuntime) resetBatteryRuntime(true)
+	if (!batteryRuntime) resetBatteryRuntime(true){
+		sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
+	}
 
 	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
@@ -138,6 +140,17 @@ def installed() {
 }
 
 def updated() {
+
+	if(battReset) {
+		resetBatteryRuntime()
+		device.updateSetting("battReset", false)
+	}
+
+	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
+	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
+}
+
+def configure() {
 
 	if(battReset) {
 		resetBatteryRuntime()
