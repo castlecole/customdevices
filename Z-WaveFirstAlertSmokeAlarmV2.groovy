@@ -97,7 +97,7 @@ metadata {
             		state "default", label:""
 		}
 
-        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 2) {
+        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 1) {
             		state "batteryRuntime", label:'Battery Changed: ${currentValue}'
         	}
 
