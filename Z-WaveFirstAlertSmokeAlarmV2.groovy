@@ -202,6 +202,10 @@ def refresh() {
 		lastSmoke = "Last Smoke Detected:\n Never"
 	}
 
+	// Clear smoke in case they pulled batteries and we missed the clear msg
+	if(device.currentValue("smoke") != "clear") {
+		createSmokeEvents("smokeClear", results)
+	}
 }
 
 def createSmokeEvents(name, results) {
