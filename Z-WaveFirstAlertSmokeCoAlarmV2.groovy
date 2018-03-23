@@ -23,7 +23,7 @@ metadata {
 		capability "Sensor"
 		capability "Battery"
 		capability "Health Check"
-    capability "Refresh"
+    		capability "Refresh"
 		attribute  "alarmState", "string"
 		attribute  "lastTested", "String"
 		attribute  "lastTestedDate", "Date"
@@ -71,8 +71,8 @@ metadata {
 			}
 		}
 
-		valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
-            		state "default", label:'${currentValue}%'+"\n", unit:"", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png", 
+	valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
+            	state "default", label:'${currentValue}%'+"\n", unit:"", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png", 
             			backgroundColors: [
 					[value: 0, color: "#ff1800"],
 					[value: 10, color: "#fb854a"],
@@ -80,46 +80,46 @@ metadata {
 					[value: 50, color: "#71f044"],
 					[value: 75, color: "#33d800"]
             			]
-		}
+	}
 
-		valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-        		state "default", label:'Last Smoke Detected:\n ${currentValue}'
-		}
+	valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+        	state "default", label:'Last Smoke Detected:\n ${currentValue}'
+	}
 
-		valueTile("lastTested", "device.lastTested", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-        		state "default", label:'Last Tested:\n ${currentValue}'
-		}
+	valueTile("lastTested", "device.lastTested", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+        	state "default", label:'Last Tested:\n ${currentValue}'
+	}
 
-		standardTile("info", "device.alarmState", inactiveLabel: True, decoration: "flat", width:2, height:2) {
-			state "clear", icon:"", label: "All Clear"
-			state "smoke", icon:"", label: "Fire! Fire! Fire!"
-			state "carbonMonoxide", icon:"", label: "Carbon Monoxide"
-			state "tested", icon:"", label: "Alarm Test"
-		}
+	standardTile("info", "device.alarmState", inactiveLabel: True, decoration: "flat", width:2, height:2) {
+		state "clear", icon:"", label: "All Clear"
+		state "smoke", icon:"", label: "Fire! Fire! Fire!"
+		state "carbonMonoxide", icon:"", label: "Carbon Monoxide"
+		state "tested", icon:"", label: "Alarm Test"
+	}
 
-		valueTile("lastMonoxide", "device.lastMonoxide", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-            state "default", label:'Last Carbon Monoxide Detected:\n $(currentValue)'
-		}
+	valueTile("lastMonoxide", "device.lastMonoxide", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+		state "default", label:'Last Carbon Monoxide Detected:\n ${currentValue}'
+	}
 
    	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
             state "batteryRuntime", label:'Battery Changed (tap to reset):\n ${currentValue}', unit:"", action:"resetBatteryRuntime"
    	}
 
-		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
-			      state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
-    }
+	standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
+		state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
+    	}
 
-		multiAttributeTile(name:"smoke2", type:"generic"){
-			tileAttribute ("device.alarmState", key:"PRIMARY_CONTROL") {
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Normal.png", backgroundColor:"#359148")
-				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#ed0000")
-				attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Event.png", backgroundColor:"#e86d13")
-                                attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#e86d13")
-        		}
-		}
+	multiAttributeTile(name:"smoke2", type:"generic"){
+		tileAttribute ("device.alarmState", key:"PRIMARY_CONTROL") {
+			attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Normal.png", backgroundColor:"#359148")
+			attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#ed0000")
+			attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Event.png", backgroundColor:"#e86d13")
+                        attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#e86d13")
+        	}
+	}
 
-		main "smoke2"
-		details(["smoke", "battery", "lastSmoke", "lastTested", "lastMonoxide", "batteryRuntime", "refresh"])
+	main "smoke2"
+	details(["smoke", "battery", "lastSmoke",  "lastMonoxide", "lastTested", "batteryRuntime", "refresh"])
 
 	}
 }
@@ -127,12 +127,18 @@ metadata {
 
 //Reset the date displayed in Battery Changed tile to current date
 def resetBatteryRuntime() {
-    def now = new Date().format("MMM dd yyyy", location.timeZone)
-    sendEvent(name: "batteryRuntime", value: now)
+    	def now = new Date().format("MMM dd yyyy", location.timeZone)
+    	sendEvent(name: "batteryRuntime", value: now)
 }
 
+
 def installed() {
-// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
+
+	sendEvent(name: "lastTested", value: "--", displayed: false)
+	sendEvent(name: "lastSmoke", value: "--", displayed: false)
+	sendEvent(name: "lastMonoxide", value: "--", displayed: false)
+
+	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
 
 	def cmds = []
@@ -142,7 +148,7 @@ def installed() {
 
 
 def updated() {
-// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
+	// Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
 }
 
@@ -169,19 +175,19 @@ def parse(String description) {
 
 def refresh() {
 
-	If (lastTested == ""){
-		sendEvent(name: "lastTested", value: "Never", displayed: false)
+	If (device.lastTested == "" ) {
+		sendEvent(name: "lastTested", value: "--", displayed: false)
 	}
 
-  If (lastSmoke == ""){
-		sendEvent(name: "lastSmoke", value: "Never", displayed: false)
+	If (device.lastSmoke == "" ) {
+		sendEvent(name: "lastSmoke", value: "--", displayed: false)
 	}
 
-  If (lastMonoxide == ""){
-		sendEvent(name: "lastMonoxide", value: "Never", displayed: false)
+  	If (device.lastMonoxide == "" ) {
+		sendEvent(name: "lastMonoxide", value: "--", displayed: false)
 	}
 
-  // Clear smoke in case they pulled batteries and we missed the clear msg
+  	// Clear smoke in case they pulled batteries and we missed the clear msg
 	if(device.currentValue("smoke") != "clear") {
 		createSmokeEvents("smokeClear", results)
 	}
@@ -190,8 +196,8 @@ def refresh() {
 def createSmokeOrCOEvents(name, results) {
 	def text = null
 
-  //  Times for events
-  def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
+  	//  Times for events
+  	def now = new Date().format("yyyy MMM dd EEE h:mm:ss a", location.timeZone)
 	def nowDate = new Date(now).getTime()
 
 	switch (name) {
