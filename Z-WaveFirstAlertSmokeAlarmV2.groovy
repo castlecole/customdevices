@@ -116,7 +116,7 @@ metadata {
 		}
 
 		main "smoke2"
-		details(["smoke", "battery", "lastSmoke", "lastTested", "blank", "batteryRuntime", "refresh"])
+		details(["smoke", "battery", "lastSmoke", "blank", "lastTested", "batteryRuntime", "refresh"])
 	}
 }
 
@@ -137,6 +137,10 @@ def resetBatteryRuntime(paired) {
 */
 
 def installed() {
+	
+	sendEvent(name: "lastTested", value: "--", displayed: false)
+	sendEvent(name: "lastSmoke", value: "--", displayed: false)
+
 	if (!batteryRuntime) resetBatteryRuntime(true){
 		sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
 	}
@@ -194,12 +198,12 @@ def parse(String description) {
 
 def refresh() {
 
-	If (lastTested == ""){
-		sendEvent(name: "lastTested", value: "Never", displayed: false)
+	If (device.lastTested == "" ) {
+		sendEvent(name: "lastTested", value: "--", displayed: false)
 	}
 	
-	If (lastSmoke == ""){
-		sendEvent(name: "lastSmoke", value: "Never", displayed: false)
+	If (device.lastSmoke == "" ) {
+		sendEvent(name: "lastSmoke", value: "--", displayed: false)
 	}
 
 	// Clear smoke in case they pulled batteries and we missed the clear msg
