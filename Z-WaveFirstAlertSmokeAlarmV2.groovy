@@ -77,6 +77,9 @@ metadata {
             		]
 		}
 
+		valueTile("lastCheckin", "device.lastCheckin", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+        		state "default", label:'Last Tested:\n ${currentValue}', backgroundColor:"#00a0dc"
+		}
 		valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last Smoke Detected:\n ${currentValue}'
 		}
@@ -94,10 +97,6 @@ metadata {
 		valueTile("blank", "", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
             		state "default", label:"n/a"
 		}
-
-//        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 1) {
-//            		state "batteryRuntime", label:'Battery Changed: ${currentValue}'
-//        	}
 
         	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
             		state "batteryRuntime", label:'Battery Changed (tap to reset):\n ${currentValue}', unit:"", action:"resetBatteryRuntime"
