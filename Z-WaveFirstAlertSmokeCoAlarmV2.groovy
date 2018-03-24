@@ -61,7 +61,7 @@ metadata {
 	tiles (scale: 2){
 		multiAttributeTile(name:"smoke", type:"generic", width:6, height:4){
 			tileAttribute ("device.alarmState", key: "PRIMARY_CONTROL") {
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear-co0.png", backgroundColor:"#359148")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear-co0.png", backgroundColor:"#00a0dc")
 				attributeState("smoke", label:"SMOKE DETECTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear-co0.png", backgroundColor:"#ed0000")
 				attributeState("carbonMonoxide", label:"CARBON MONOXIDE DETECTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco-co0.png", backgroundColor:"#e86d13")
 				attributeState("tested", label:"TESTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclearco0.png", backgroundColor:"#e86d13")
@@ -111,7 +111,7 @@ metadata {
 
 	multiAttributeTile(name:"smoke2", type:"generic"){
 		tileAttribute ("device.alarmState", key:"PRIMARY_CONTROL") {
-			attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Normal.png", backgroundColor:"#359148")
+			attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Normal.png", backgroundColor:"#00a0dc")
 			attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#ed0000")
 			attributeState("carbonMonoxide", label:"MONOXIDE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-CO-Event.png", backgroundColor:"#e86d13")
                         attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire-co.png", backgroundColor:"#e86d13")
