@@ -78,7 +78,7 @@ metadata {
 		}
 
 		valueTile("lastCheckin", "device.lastCheckin", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-        		state "default", label:'Last Tested:\n ${currentValue}', backgroundColor:"#00a0dc"
+        		state "default", label:'Last Checkin:\n ${currentValue}', backgroundColor:"#00a0dc"
 		}
 		valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last Smoke Detected:\n ${currentValue}'
