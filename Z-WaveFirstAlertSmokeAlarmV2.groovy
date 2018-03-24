@@ -57,7 +57,7 @@ metadata {
 	tiles (scale: 2){
 		multiAttributeTile(name:"smoke", type:"generic", width:6, height:4){
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#359148")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#00a0dc")
 				attributeState("detected", label:"SMOKE DETECTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")
 				attributeState("tested", label:"TESTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
 			}
@@ -92,7 +92,7 @@ metadata {
 		}
 		
 		valueTile("blank", "", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-            		state "default", label:""
+            		state "default", label:"n/a"
 		}
 
 //        	valueTile("batteryRuntime", "device.batteryRuntime", inactiveLabel: false, decoration:"flat", width: 4, height: 1) {
@@ -109,7 +109,7 @@ metadata {
 
  		multiAttributeTile(name:"smoke2", type:"generic"){
 			tileAttribute ("device.smoke", key:"PRIMARY_CONTROL") {
-				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Normal.png", backgroundColor:"#359148")
+				attributeState("clear", label:"CLEAR", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-Normal.png", backgroundColor:"#00a0dc")
 				attributeState("detected", label:"SMOKE", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#ed0000")
 				attributeState("tested", label:"TEST", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-fire.png", backgroundColor:"#e86d13")
 			}
@@ -126,15 +126,6 @@ def resetBatteryRuntime() {
     sendEvent(name: "batteryRuntime", value: now)
 }
 
-/*
-def resetBatteryRuntime(paired) {
-
-	def now = formatDate(true)
-	def newlyPaired = paired ? " for newly paired sensor" : ""
-	sendEvent(name: "batteryRuntime", value: now)
-	log.debug "${device.displayName}: Setting Battery Changed to current date${newlyPaired}"
-}
-*/
 
 def installed() {
 	
