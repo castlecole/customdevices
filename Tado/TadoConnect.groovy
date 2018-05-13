@@ -66,7 +66,7 @@ preferences {
 	page(name: "mainPage", title: "Tado (Connect) Integration", content: "mainPage")
 	page(name: "completePage", title: "${getVendorName()} is now connected to SmartThings!", content: "completePage")
 	page(name: "listDevices", title: "Tado Devices", content: "listDevices", install: false)
-    page(name: "listUsers", title: "Tado Users", content: "listUsers", install: false)
+        page(name: "listUsers", title: "Tado Users", content: "listUsers", install: false)
 	page(name: "advancedOptions", title: "Tado Advanced Options", content: "advancedOptions", install: false)
 	page(name: "badCredentials", title: "Invalid Credentials", content: "badAuthPage", install: false)
 }
@@ -433,7 +433,7 @@ def userPoll() {
 def createChildDevice(deviceFile, dni, name, label) {
 	log.debug "In createChildDevice"
     try{
-		def childDevice = addChildDevice("fuzzysb", deviceFile, dni, getHubID(), [name: name, label: label, completedSetup: true])
+		def childDevice = addChildDevice("castlecole", deviceFile, dni, getHubID(), [name: name, label: label, completedSetup: true])
 	} catch (e) {
 		log.error "Error creating device: ${e}"
 	}
