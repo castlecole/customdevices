@@ -91,7 +91,12 @@ tiles(scale: 2){
 		}
 	}
 
-        valueTile("heatingSetpoint", "device.heatingSetpoint", width: 2, height: 1, decoration: "flat") {
+      	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
+		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
+            		attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
+            	}
+
+	valueTile("heatingSetpoint", "device.heatingSetpoint", width: 2, height: 1, decoration: "flat") {
 		state "default", label: 'Set Point\r\n\${currentValue}°'
 	}
 
@@ -140,7 +145,7 @@ tiles(scale: 2){
         	state("default", label:'', action:"endManualControl", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/endManual.png")
 	}
 	
-	main "thermostat"
+	main "thermostat2"
 	details (["thermostat","thermostatMode","outsidetemperature","heatingSetpoint","refresh","heatingSetpointUp","heatingSetpointDown","tadoMode","emergencyHeat","heat","Off","endManualControl"])
     }
 }
