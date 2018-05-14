@@ -38,7 +38,7 @@ import groovy.json.JsonOutput
 
 private apiUrl() 			{ "https://my.tado.com" }
 private getVendorName() 	{ "Tado" }
-private getVendorIcon()		{ "https://dl.dropboxusercontent.com/s/fvjrqcy5xjxsr31/tado_128.png" }
+private getVendorIcon()		{ https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Heating128.png" }
 private getClientId() 		{ appSettings.clientId }
 private getClientSecret() 	{ appSettings.clientSecret }
 private getServerUrl() 		{ if(!appSettings.serverUrl){return getApiServerUrl()} }
@@ -50,8 +50,8 @@ definition(
     author: "Stuart Buchanan",
     description: "Tado Integration, This SmartApp supports all Tado Products. (Heating Thermostats, Extension Kits, AC Cooling & Radiator Valves.)",
     category: "SmartThings Labs",
-	iconUrl:   "https://dl.dropboxusercontent.com/s/fvjrqcy5xjxsr31/tado_128.png",
-	iconX2Url: "https://dl.dropboxusercontent.com/s/jyad58wb28ibx2f/tado_256.png",
+	iconUrl:   "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Heating128.png",
+	iconX2Url: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Heating.png",
 	oauth: true,
     singleInstance: false
 ) {
