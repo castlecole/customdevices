@@ -38,7 +38,7 @@ preferences {
 metadata {
 	definition (name: "Tado Heating Thermostat", namespace: "castlecole", author: "Stuart Buchanan") {
 		capability "Actuator"
-    capability "Temperature Measurement"
+    		capability "Temperature Measurement"
 		capability "Thermostat Heating Setpoint"
 		capability "Thermostat Setpoint"
 		capability "Thermostat Mode"
@@ -49,11 +49,11 @@ metadata {
 		capability "Refresh"
 		attribute "tadoMode", "string"
 		command "temperatureUp"
-    command "temperatureDown"
-    command "heatingSetpointUp"
-    command "heatingSetpointDown"
+    		command "temperatureDown"
+    		command "heatingSetpointUp"
+    		command "heatingSetpointDown"
 		command "on"
-    command "endManualControl"
+    		command "endManualControl"
 		command "emergencyHeat"
 
 	}
@@ -67,76 +67,83 @@ metadata {
 
 tiles(scale: 2){
       	multiAttributeTile(name: "thermostat", type:"thermostat", width:6, height:4) {
-			tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
-            	attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
-            }
-			tileAttribute("device.temperature", key: "VALUE_CONTROL") {
-    			attributeState("VALUE_UP", action: "temperatureUp")
-    			attributeState("VALUE_DOWN", action: "temperatureDown")
-  			}
-			tileAttribute("device.humidity", key: "SECONDARY_CONTROL") {
-    			attributeState("default", label:'${currentValue}%', unit:"%")
-  			}
-            tileAttribute("device.thermostatOperatingState", key: "OPERATING_STATE") {
-    			attributeState("idle", backgroundColor:"#666666")
-    			attributeState("heating", backgroundColor:"#ff471a")
-                attributeState("emergency heat", backgroundColor:"#ff471a")
-  			}
-            tileAttribute("device.thermostatMode", key: "THERMOSTAT_MODE") {
-    			attributeState("off", label:'${name}')
-    			attributeState("heat", label:'${name}')
-  			}
-			tileAttribute("device.heatingSetpoint", key: "HEATING_SETPOINT") {
-    			attributeState("default", label:'${currentValue}', unit:"dF")
-  			}
+		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
+            		attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
+            	}
+		tileAttribute("device.temperature", key: "VALUE_CONTROL") {
+			attributeState("VALUE_UP", action: "temperatureUp")
+			attributeState("VALUE_DOWN", action: "temperatureDown")
 		}
+		tileAttribute("device.humidity", key: "SECONDARY_CONTROL") {
+			attributeState("default", label:'${currentValue}%', unit:"%")
+		}
+		tileAttribute("device.thermostatOperatingState", key: "OPERATING_STATE") {
+			attributeState("idle", backgroundColor:"#666666")
+			attributeState("heating", backgroundColor:"#ff471a")
+			attributeState("emergency heat", backgroundColor:"#ff471a")
+		}
+		tileAttribute("device.thermostatMode", key: "THERMOSTAT_MODE") {
+			attributeState("off", label:'${name}')
+			attributeState("heat", label:'${name}')
+		}
+		tileAttribute("device.heatingSetpoint", key: "HEATING_SETPOINT") {
+			attributeState("default", label:'${currentValue}', unit:"dF")
+		}
+	}
 
         valueTile("heatingSetpoint", "device.heatingSetpoint", width: 2, height: 1, decoration: "flat") {
-			state "default", label: 'Set Point\r\n\${currentValue}°'
-		}
+		state "default", label: 'Set Point\r\n\${currentValue}°'
+	}
 
         standardTile("tadoMode", "device.tadoMode", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
-			state("SLEEP", label:'${name}', backgroundColor:"#0164a8", icon:"st.Bedroom.bedroom2")
-            state("HOME", label:'${name}', backgroundColor:"#fab907", icon:"st.Home.home2")
-            state("AWAY", label:'${name}', backgroundColor:"#62aa12", icon:"st.Outdoor.outdoor18")
-            state("OFF", label:'', backgroundColor:"#ffffff", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_off.png", defaultState: true)
-            state("MANUAL", label:'${name}', backgroundColor:"#804000", icon:"st.Weather.weather1")
-		}
+		state("SLEEP", label:'${name}', backgroundColor:"#0164a8", icon:"st.Bedroom.bedroom2")
+            	state("HOME", label:'${name}', backgroundColor:"#fab907", icon:"st.Home.home2")
+            	state("AWAY", label:'${name}', backgroundColor:"#62aa12", icon:"st.Outdoor.outdoor18")
+            	state("OFF", label:'', backgroundColor:"#ffffff", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_off.png", defaultState: true)
+            	state("MANUAL", label:'${name}', backgroundColor:"#804000", icon:"st.Weather.weather1")
+	}
 
-		standardTile("thermostatMode", "device.thermostatMode", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
+	standardTile("thermostatMode", "device.thermostatMode", width: 2, height: 2, canChangeIcon: true, canChangeBackground: true) {
         	state("heat", label:'HEAT', backgroundColor:"#ea2a2a", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/heat_mode_icon.png")
-            state("off", label:'', backgroundColor:"#ffffff", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_off.png", defaultState: true)
-		}
+            	state("off", label:'', backgroundColor:"#ffffff", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_off.png", defaultState: true)
+	}
 
         standardTile("refresh", "device.switch", width: 2, height: 1, decoration: "flat") {
-			state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
-		}
-        standardTile("Off", "device.thermostat", width: 2, height: 1, decoration: "flat") {
-			state "default", label:"", action:"thermostat.off", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_off.png"
-		}
-		standardTile("emergencyHeat", "device.thermostat", width: 2, height: 1, decoration: "flat") {
-			state "default", label:"", action:"thermostat.emergencyHeat", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/emergencyHeat.png"
-		}
-		valueTile("outsidetemperature", "device.outsidetemperature", width: 2, height: 1, decoration: "flat") {
-			state "outsidetemperature", label: 'Outside Temp\r\n${currentValue}°'
-		}
-		standardTile("heat", "device.thermostat", width: 2, height: 1, decoration: "flat") {
-			state "default", label:"", action:"thermostat.heat", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_heat.png"
-		}
-		standardTile("heatingSetpointUp", "device.heatingSetpoint", width: 1, height: 1, canChangeIcon: false, decoration: "flat") {
-            state "heatingSetpointUp", label:'', action:"heatingSetpointUp", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/heat_arrow_up.png"
-        }
-        standardTile("heatingSetpointDown", "device.heatingSetpoint", width: 1, height: 1, canChangeIcon: false, decoration: "flat") {
-            state "heatingSetpointDown", label:'', action:"heatingSetpointDown", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/heat_arrow_down.png"
-        }
-		standardTile("endManualControl", "device.thermostat", width: 2, height: 1, canChangeIcon: false, canChangeBackground: true, decoration: "flat") {
-            state("default", label:'', action:"endManualControl", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/endManual.png")
-		}
-		main "thermostat"
-		details (["thermostat","thermostatMode","outsidetemperature","heatingSetpoint","refresh","heatingSetpointUp","heatingSetpointDown","tadoMode","emergencyHeat","heat","Off","endManualControl"])
+		state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
 	}
-}
+        
+	standardTile("Off", "device.thermostat", width: 2, height: 1, decoration: "flat") {
+		state "default", label:"", action:"thermostat.off", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_off.png"
+	}
 
+	standardTile("emergencyHeat", "device.thermostat", width: 2, height: 1, decoration: "flat") {
+		state "default", label:"", action:"thermostat.emergencyHeat", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/emergencyHeat.png"
+	}
+	
+	valueTile("outsidetemperature", "device.outsidetemperature", width: 2, height: 1, decoration: "flat") {
+		state "outsidetemperature", label: 'Outside Temp\r\n${currentValue}°'
+	}
+	
+	standardTile("heat", "device.thermostat", width: 2, height: 1, decoration: "flat") {
+		state "default", label:"", action:"thermostat.heat", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/hvac_heat.png"
+	}
+	
+	standardTile("heatingSetpointUp", "device.heatingSetpoint", width: 1, height: 1, canChangeIcon: false, decoration: "flat") {
+        	state "heatingSetpointUp", label:'', action:"heatingSetpointUp", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/heat_arrow_up.png"
+        }
+	
+        standardTile("heatingSetpointDown", "device.heatingSetpoint", width: 1, height: 1, canChangeIcon: false, decoration: "flat") {
+        	state "heatingSetpointDown", label:'', action:"heatingSetpointDown", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/heat_arrow_down.png"
+        }
+
+	standardTile("endManualControl", "device.thermostat", width: 2, height: 1, canChangeIcon: false, canChangeBackground: true, decoration: "flat") {
+        	state("default", label:'', action:"endManualControl", icon:"https://raw.githubusercontent.com/fuzzysb/Tado/master/devicetypes/fuzzysb/tado-heating-thermostat.src/Images/endManual.png")
+	}
+	
+	main "thermostat"
+	details (["thermostat","thermostatMode","outsidetemperature","heatingSetpoint","refresh","heatingSetpointUp","heatingSetpointDown","tadoMode","emergencyHeat","heat","Off","endManualControl"])
+    }
+}
 
 def getWeather(){
 	parent.weatherStatusCommand(this)
