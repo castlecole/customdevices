@@ -80,7 +80,7 @@ tiles(scale: 2){
       	multiAttributeTile(name: "thermostat", type:"thermostat", width:6, height:4) {
 		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
             		attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907",
-				icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado-Heater-256.png"
+				icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado-Heater-128.png"
             	}
 		tileAttribute("device.temperature", key: "VALUE_CONTROL") {
 			attributeState("VALUE_UP", action: "temperatureUp")
