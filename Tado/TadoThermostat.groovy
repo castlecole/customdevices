@@ -36,15 +36,6 @@ def version() {
 	return "v2 (20180514)\nTado Heating Thermostat - WWW Interface"
 }
 
-preferences {
-        section {
-            input name: "Thermostat Type", type: "enum", title: "Tado Theromstat Type: ", options: ["Radiator", "Heating"], description: "Sets the icon seen in the device.", defaultValue: "Radiator", displayDuringSetup: true, required: true
-        }
-	section {
-	    input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
-	}
-}
-
 metadata {
 	definition (name: "Tado Heating Thermostat", namespace: "castlecole", author: "Stuart Buchanan") {
 		capability "Actuator"
@@ -58,6 +49,8 @@ metadata {
 		capability "Polling"
 		capability "Refresh"
 		attribute "tadoMode", "string"
+        	attribute "ThermostatType", "string"
+        	attribute "TadoIcon", "string"
 		command "temperatureUp"
     		command "temperatureDown"
     		command "heatingSetpointUp"
@@ -68,17 +61,26 @@ metadata {
 
 	}
 
-	// simulator metadata
-	simulator {
-		// status messages
+// simulator metadata
+simulator {
+	// status messages
+	// reply messages
+}
 
-		// reply messages
+preferences {
+        section {
+            input name: "Thermostat Type", type: "enum", title: "Tado Theromstat Type: ", options: ["Radiator", "Heating"], description: "Sets the icon seen in the device.", defaultValue: "Radiator", displayDuringSetup: true, required: true
+        }
+	section {
+	    input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
+}
 
 tiles(scale: 2){
       	multiAttributeTile(name: "thermostat", type:"thermostat", width:6, height:4) {
 		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
-            		attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907", icon:"st.Home.home1"
+            		attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907",
+				icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado-Heater-256.png"
             	}
 		tileAttribute("device.temperature", key: "VALUE_CONTROL") {
 			attributeState("VALUE_UP", action: "temperatureUp")
@@ -101,14 +103,10 @@ tiles(scale: 2){
 		}
 	}
 
-	if (device.currentValue("Thermostat Type") == "Radiator") {
-		multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
-			tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
-            			attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
-	} else {
-		multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
-			tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
-            			attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Thermo.png"
+	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
+		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
+       			attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907",
+				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
             	}
 	}
 	
