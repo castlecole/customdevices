@@ -39,6 +39,7 @@ def version() {
 metadata {
 	definition (name: "Tado Heating Thermostat", namespace: "castlecole", author: "Stuart Buchanan") {
 		capability "Actuator"
+		capability "Battery"
     		capability "Temperature Measurement"
 		capability "Thermostat Heating Setpoint"
 		capability "Thermostat Setpoint"
