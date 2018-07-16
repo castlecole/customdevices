@@ -46,17 +46,29 @@ If you add new cameras to your system, go through the Diskstation (Connect) app 
 
 
 # Generic-Video-Camera
-Generic Video Camera Live Streaming Video in SmartThings Tile View
+## Generic Video Camera Live Streaming Video in SmartThings Tile View
 
-Install the 2 smartapps and devicetype in IDE.
+## Installation Instructions:
 
-Add SmartApp Connect app to your mobile install
-Go into SmartApps, Generic Video Camera Connect App
-Add Cameras
-Either use drop down and edit in the child smartapp in IDE for your cameras
-or
-use the custom url to add any url to stream.
+1. Install from Code for each smartapp and the devicetype
+2. Publish the connect app and devicetype (don’t publish the child smartapp)
+3. Go to Marketplace, smartapps, my apps, find the connect app. Click Done to install the smartapp.
+4. Go to smartapps in fly out, side menu find the Generic Video Camera Connect smartapp.
+(If it isn’t there, its a platform bug, need to go into IDE, locations, smartaps, find the smartapp, click on it and uncheck the child check box)
+5. Add a camera.
+6. Make sure the url is all lowercase for rtsp or http: etc, as Android and iOS can tend to capitalize the first letter, which can then fail.
+7. Add as many cameras as you want.
+8. They will show up in your things list.
 
+## Known Issues:
+- iOS streaming is limited, nothing I can do about this, it appears it is an iOS limitation, try a low res stream.
+- Sometimes streaming will stop or lag out, this might be an ST app issue, restart app and should be fine.
+- Resuming from sleep on android with stream open may result in black window or missing video tile, wait a bit or force quit and restart app.
+
+This is completely unsupported and taking advantage of undocumented / unreleased features which can and probably will break in the next mobile app release, firmware upgrade, platform release, phase of moon change or at the flap of a butterfly’s wing.
+No warranty is provided. It could melt your phone for all I know.
+
+## NOTE: Do not port forward your cameras. This will only work when you are on your home network or using a VPN back to your home network. I repeat, DO NOT PORT FORWORD your cameras.
 
 # Panasonic PTZ Camera
 
