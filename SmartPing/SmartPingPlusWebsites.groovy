@@ -22,7 +22,7 @@
  
 definition(
 	name: "SmartPing Plus - Websites",
-	namespace: "flyjmz",
+	namespace: "castlecole",
 	author: "flyjmz",
 	parent: "flyjmz:SmartPing Plus",
 	description: "Child app to 'SmartPing Plus.' Install that app, it'll call this one during installation.",
