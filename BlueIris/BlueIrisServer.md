@@ -10,15 +10,11 @@
 
 ## Blue Iris Server Device Type:
 
-IMG_4072.PNG
-750x1334 56.2 KB
-
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/ServerDeviceType.png" width="320px" height="548px" />
 
 ## Blue Iris Camera Device Type:
 
-IMG_C242DECA5D81-1.jpeg
-1125x2436 268 KB
-
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/CameraDeviceType.jpg" width="320px" height="548px" />
 
 Limited live stream capability - only work when your phone is on the same LAN as your Blue Iris computer, and is limited by SmartThings’ live stream capabilities. No image capture due to the way BI Fusion builds all the capabilities into one set of smartapps and DTHs. I strongly encourage you to use the Blue Iris Mobile apps 26 for video and image viewing. It has all the capabilities now and works better than non-SmartThings-branded video will ever work within SmartThings.
 Plus BI Fusion still does (and now does better):
@@ -65,9 +61,7 @@ Make sure there are no spaces or special characters in the username, password, a
 The username for Blue Iris login needs to be an Admin username to make profile changing work. For security reasons, I recommend creating a new username just for this integration, so you can look at the logs and tell when it was you or the app that was logging into Blue Iris.
 In Blue Iris’s Advanced Webserver settings, “Use Secure Session Keys and Login Page” must NOT be checked:
 
-new secure only.jpg
-620x587 68.4 KB
-
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/BI Advanced Webserver Settings.jpg" width="620px" height="587px" />
 
 NOTE: While this is a reduced security setting in Blue Iris, it is only being used when using a local only connection (i.e. computer and hub are on the same network that is secured from intrusion). So as long as you’ve taken reasonable steps to secure your home network, this is not reducing security. If you are using the external options for setup (i.e. the computer and hub are not on the same network), then you don’t need to do this step and can leave it with the higher security setting. (Local and external use different protocols to communicate between computer and hub, and require different settings to work).
 
@@ -79,14 +73,10 @@ Now we can set up Motion Alerts in Blue Iris.
 Go to Blue Iris and open Camera Properties for your first camera.
 Follow the directions in these screenshots and enter the URLs from the BI Fusion Setting Screenshot you took or from the debug logs earlier:
 
-Pic 1.jpg
-1295x981 212 KB
-
- 
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/BI Camera Settings.jpg" width="620px" height="587px" />
 
 
-Pic 2.jpg
-1093x867 164 KB
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/BI Camera Alert.jpg" width="620px" height="587px" />
 
 
 Make sure you enter the URL correctly, not including the “https://” but selecting it from the dropdown menu.
