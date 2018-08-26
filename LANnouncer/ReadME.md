@@ -68,9 +68,6 @@ LANNouncer supports quite a few commands, many of which take parameters. These c
 This section overviews the commands. 
 
 ### Additional Commands
-- Not every
-- String
-- Purpose
 - @#ALARM=CHIME
 - Sound a chime, like a store entry
   (Same as using the Notification.beep device capability.)
