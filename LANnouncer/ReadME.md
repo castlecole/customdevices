@@ -134,11 +134,11 @@ After you've created a device, this screen appears.  It is only for testing; you
 From this device, these tiles control the target device.  (I.e. in this case, the SMT320 tablet.)
 The Strobe tile turns on the flash briefly.  The Siren turns on an Alarm sound.  Speak will, if the settings (next screen) allow 'Say Nothing', tell you that LANnouncer is working.  Notify does the same thing with a Toast.  And Tone plays a chime.
 
-<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Device%2520Screen.png" width="320px" height="1203px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Device%2520Screen.png" width="320px" height="548px" />
 
 The menu allows editing settings; in this case they are:
 
-<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Preferences.png" width="320px" height="1203px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Preferences.png" width="320px" height="548px" />
 
 The "Device Name" will be how you refer to this device from SmartApps, including Remote LANdroid.  
 
@@ -175,13 +175,13 @@ LANnouncer requires SDK 21, which means Lollipop, Android 5.0, or above.  This i
 Remote LANnouncer is a SmartThings SmartApp that watches for LANnouncer events and forwards them to the desired Android phone via SMS. These will be a bit cryptic, of the form ALARM=ALARM&@DONE@, and consequently you will not only receive the speech, alarm or strobe, but also an SMS - with the audio notification if enabled and with the slightly-cluttered inbox.
 Due to a foible in how Android contexts and receivers interact, Remote LANnouncer's U.I. will pop-up in SMS mode when playing Text-To-Speech.  It should go back into the background quickly.  Do not press "back" if this happens; you can press Home or "Recently Used", but not Back, or you will terminate the service.
 
-<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Remote%2520Settings.png" width="320px" height="1203px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Remote%2520Settings.png" width="320px" height="548px" />
 
 The phone number is the entire number to send the SMS to.  
 The "Which" refers to which LANDroid Device.  It is possible that non-LANdroid devices will be listed; select only a LANdroid device.
 The name selected may be used by applications, and will appear as the SmartApp in the Device listing, as below:
 
-<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Apps.png" width="320px" height="1203px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/LANnouncer/LANdroid%2520Apps.png" width="320px" height="548px" />
 
 As mentioned at the top, the Remote LANdroid functionality uses SMS.  This does mean you will also receive SMS notifications (e.g. a "bing" if that's what your phone does when you get an SMS), and additional messages in your SMS inbox.  I added the incoming address to my address book with the name "SmartThings Hub", so I could recognize and ignore them.
 
