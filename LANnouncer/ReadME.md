@@ -36,20 +36,20 @@ There are several pages linked from here:
 ## Tips
 Example IP Addresses
 I.P. addresses here are examples, and will generally be of the form 192.168.1.999 or 192.168.1.xx. You should replace the last segment with the correct I.P. address. 
-DONE Marker
+### DONE Marker
 When using the SmartThings LANdroid device handler, the DONE marker is appended automatically for you.  But when using other mechanisms, such as SMS from outside of SmartThings or curl commands, you may find reliability improved by tacking it on manually.
 The DONE Marker is @DONE@.  It should be appended with a query separator - e.g. 
 	curl "192.168.1.999:1035/?ALARM=SIREN&@DONE@"
-Speak Envelope
+### Speak Envelope
 LANnouncer understands socket commands (and SMS commands) that SmartThings natively doesn't know how to send.  And in many cases, SmartThings doesn't have the flexibility to send arbitrary commands; it expects to support only specific devices in specific contexts.  This can be limiting.
 To get around this, you can use the SPEAK ENVELOPE.  For example, if an alarm isn't supported but voice is, you could "say" SPEAK=@|ALARM=CHIME to get the chime.
-Multiple Commands
+### Multiple Commands
 When firing several actions against the same LANnouncer at the same time, it's better to issue them as one with a SPEAK Envelope than as individual commands.  This is because SmartThings does not handle sockets well, so the best approach is to send few of them.
 Commands can be strung together with &.  This can be done via the Speak Envelope or directly if using sockets.  
 For example, to send a chime and collect a sequence of photos, you can send the commands ?CHIME=ALARM&RETRIEVESEQ=MYCAMERA.  
 This even works with speech; you could send, e.g., 
 curl "192.168.1.999:1035/?SPEAK=@|ALARM=CHIME&SPEAK=Hello daddy&@DONE@"
-Testing
+### Testing
 Use curl.  Heavily.  To test image retrieval, ensure the command should return images (rather than just saving them), and redirect the curl results to a file.
 
 ## Installing It
@@ -134,11 +134,11 @@ After you've created a device, this screen appears.  It is only for testing; you
 From this device, these tiles control the target device.  (I.e. in this case, the SMT320 tablet.)
 The Strobe tile turns on the flash briefly.  The Siren turns on an Alarm sound.  Speak will, if the settings (next screen) allow 'Say Nothing', tell you that LANnouncer is working.  Notify does the same thing with a Toast.  And Tone plays a chime.
 
-![Device Screen](LANdroid%20Device%20Screen.png)
+<img src="https://raw.githubusercontent.com/castlecole/Customdevices/LANnouncer/master/LANdroid%20Device%20Screen.png" width="320px" height="1203px" />
 
 The menu allows editing settings; in this case they are:
 
-![Preferences Screen](LANdroid%20Preferences.png)
+<img src="https://raw.githubusercontent.com/castlecole/Customdevices/LANnouncer/master/LANdroid%20Preferences.png" width="320px" height="1203px" />
 
 The "Device Name" will be how you refer to this device from SmartApps, including Remote LANdroid.  
 
@@ -160,7 +160,7 @@ You can find your Android's IP Address under [Settings] [Wi-Fi], typically the m
 If you update the device code (version), you may have to force SmartThings to recognize the new version. Just FYI. 
 
 ## LANnouncer Service
-![LANouncer Logo](LANdroid%20Icon.png) The LANnouncer Service (formerly LANdroid / TTSService, but Google didn't like the embedded "android") is the Android application/service that runs on the phone or tablet. It specifically watches for network or SMS messages coming from LANroid, and acts on them. This differs from some other contemporary SmartThings speech devices in that the speech synthesis is done on the Android device, rather than merely being played on it.
+<img src="https://raw.githubusercontent.com/castlecole/Customdevices/LANnouncer/master/LANdroid%20Icon.png" width="320px" height="320px" /> The LANnouncer Service (formerly LANdroid / TTSService, but Google didn't like the embedded "android") is the Android application/service that runs on the phone or tablet. It specifically watches for network or SMS messages coming from LANroid, and acts on them. This differs from some other contemporary SmartThings speech devices in that the speech synthesis is done on the Android device, rather than merely being played on it.
 The LANnouncer Service can be set to listen on the network (on the port of your choice; 1035 is the default), or to watch for SMS messages, or both.
 There are some configuration options on LANnouncer, but they're largely unimplemented currently (Alpha stage.)  All you really need to know is:
 You must start LANnouncer for it to run and work
@@ -175,13 +175,13 @@ LANnouncer requires SDK 21, which means Lollipop, Android 5.0, or above.  This i
 Remote LANnouncer is a SmartThings SmartApp that watches for LANnouncer events and forwards them to the desired Android phone via SMS. These will be a bit cryptic, of the form ALARM=ALARM&@DONE@, and consequently you will not only receive the speech, alarm or strobe, but also an SMS - with the audio notification if enabled and with the slightly-cluttered inbox.
 Due to a foible in how Android contexts and receivers interact, Remote LANnouncer's U.I. will pop-up in SMS mode when playing Text-To-Speech.  It should go back into the background quickly.  Do not press "back" if this happens; you can press Home or "Recently Used", but not Back, or you will terminate the service.
 
-![Remote LANouncer](LANdroid%20Remote%20Settings.png)
+<img src="https://raw.githubusercontent.com/castlecole/Customdevices/LANnouncer/master/LANdroid%20Remote%20Settings.png" width="320px" height="1203px" />
 
 The phone number is the entire number to send the SMS to.  
 The "Which" refers to which LANDroid Device.  It is possible that non-LANdroid devices will be listed; select only a LANdroid device.
 The name selected may be used by applications, and will appear as the SmartApp in the Device listing, as below:
 
-![LANouncer as an App Service](LANdroid%20Apps.png)
+<img src="https://raw.githubusercontent.com/castlecole/Customdevices/LANnouncer/master/LANdroid%20Apps.png" width="320px" height="1203px" />
 
 As mentioned at the top, the Remote LANdroid functionality uses SMS.  This does mean you will also receive SMS notifications (e.g. a "bing" if that's what your phone does when you get an SMS), and additional messages in your SMS inbox.  I added the incoming address to my address book with the name "SmartThings Hub", so I could recognize and ignore them.
 
@@ -195,7 +195,47 @@ In addition, you will probably want to add Ray Zurbock's Big Talker or a similar
 The standard SmartThings commands are a bit light on flexibility. For example, there's no distinction between a chime, a doorbell and an alarm. But LANnouncer supports these.
 To get there, use Big Talker or another speech driver to send the command strings.
 
+## Trouble Shooting
+If LANnouncer doesn't appear to be working, first determine if the driver itself is working on the Android device.  You can do this by sending a curl command (assuming you have curl; if you don't, you can use a web browser but it's not as informative) as follows, assuming your IP Address is 192.168.1.200:
 
+    C\>curl "192.168.1.200:1035/?ALARM=SIREN&amp;@DONE@"
+
+Two things should happen.
+
+  1. Curl returns: LANnouncer: OK
+  2. The siren sounds.
+
+If those happen, then it's a Big Talker or hub issue.  If they don't happen, either the service isn't listening or the tablet can't be reached.
+
+To decide which, try pinging it. You should see something like:
+    C:\>ping 192.168.1.200
+
+    Pinging 192.168.1.200 with 32 bytes of data:
+    Reply from 192.168.1.200: bytes=32 time=54ms TTL=64
+    Reply from 192.168.1.200: bytes=32 time=82ms TTL=64
+
+    Ping statistics for 192.168.1.200:
+Packets: Sent = 2, Received = 2, Lost = 0 (0% loss),
+    Approximate round trip times in milli-seconds:
+Minimum = 54ms, Maximum = 82ms, Average = 68ms
+
+If you see:
+    C:\>ping 192.168.1.20                                 
+                                                                         
+    Pinging 192.168.1.20 with 32 bytes of data:                                  
+    Reply from 192.168.1.x: Destination host unreachable.                       
+    Reply from 192.168.1.x: Destination host unreachable.                       
+    Reply from 192.168.1.x: Destination host unreachable.                       
+    Reply from 192.168.1.x: Destination host unreachable.                       
+                                                                         
+    Ping statistics for 192.168.1.20: 
+
+Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),                     
+
+Then it couldn't reach your tablet at all.  Check the networking.
+
+### LANnouncer stops responding after a while
+This is usually a network setting.  Again, try the curl requests when it's not working.  The solution is probably in your WiFi settings...
 
 ## About
 LANdroid and LANnouncer were written by NWTony/KeyBounce in response to his frustration at the lack of audio outputs from SmartThings.
