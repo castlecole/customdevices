@@ -73,7 +73,7 @@ Now we can set up Motion Alerts in Blue Iris.
 Go to Blue Iris and open Camera Properties for your first camera.
 Follow the directions in these screenshots and enter the URLs from the BI Fusion Setting Screenshot you took or from the debug logs earlier:
 
-<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/BI Camera Settings.jpg" width="620px" height="587px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/BI Camera Settings.jpg" width="720px" height="587px" />
 
 
 <img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/BI Camera Alert.jpg" width="620px" height="587px" />
