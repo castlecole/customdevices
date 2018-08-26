@@ -4,12 +4,12 @@ Pressure mats work opposite to Door/Window sensors, normally “open” status. 
 Pressure mats are also used as doorbells for houseboats.
 The mat itself has the contact pad, but doesn’t have a zwave or zigbee radio, so you have to buy that separately. Use a door sensor as the z-wave part.
 
-<img src="https://github.com/castlecole/customdevices/blob/master/PressureMat.jpg" width="320px" height="250px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/Other/PressureMat.jpg" width="320px" height="250px" />
 
 
 Just connect the leads from the mat to the screw terminals inside a suitable Door/Window sensor and you have a connected pressure sensitive mat. These are great little devices because of the “undocumented” connections inside them.
 
-<img src="https://github.com/castlecole/customdevices/blob/master/EcolinkDoorSensor.jpg" width="500px" height="500px" />
+<img src="https://github.com/castlecole/customdevices/blob/master/Other/EcolinkDoorSensor.jpg" width="500px" height="500px" />
 
 ## Suitable Door/Window Z-Wave Sensors:
 - Ecolink Intelligent Technology Z-Wave Easy Install, Battery Operated, Door/Window Sensor, White & Brown (DWZWAVE2-ECO)
