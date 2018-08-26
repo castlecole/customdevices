@@ -38,6 +38,8 @@ The Camera Device can also be selected as a Motion Sensor, which becomes active/
 You don’t want to have your Camera Device’s motion sensing trigger the Camera Device’s switch to enable recording, because you’ll create an endless loop of recording… Treat the two function separately. 
 Example: Front door contact opening triggers the Porch Camera Device’s switch ‘on’ to ensure the event is recorded. Separately, you can have SHM monitor the Porch Camera DTH’s motion and alert you when it is active.
 
+<img src="https://github.com/castlecole/customdevices/blob/master/BlueIris/Example.jpg" width="320px" height="548px" />
+
 ## How to Install:
 1. In the SmartThings API, Create a new Smartapp. Either from code and copy the code from the links below, or add my Github repository to your Github Integration settings:
 Owner: flyjmz
