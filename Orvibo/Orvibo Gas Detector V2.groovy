@@ -19,7 +19,7 @@ import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 import physicalgraph.zigbee.zcl.DataType
 
 def version() {
-	return "v2 (20180812)\nOrvibo Gas Detector"
+	return "v2 (20180827)\nOrvibo Gas Detector"
 }
 
 metadata {
@@ -30,16 +30,15 @@ metadata {
 		capability "Sensor"
 		capability "Refresh"
     
-   	command "resetClear"
+   		command "resetClear"
 		command "resetSmoke"
 
-    attribute "lastTested", "String"
+    		attribute "lastTested", "String"
 		attribute "lastTestedDate", "Date"
 		attribute "lastCheckinDate", "Date"		
 		attribute "lastCheckin", "string"
 		attribute "lastSmoke", "String"
 		attribute "lastSmokeDate", "Date"
-		attribute "lastDescription", "String"
     
 		fingerprint profileId: "0104", deviceId: "0402", inClusters: "0000, 0003, 0500, 0009", outClusters: "0019", manufacturer: "Heiman", model:"d0e857bfd54f4a12816295db3945a421"
 	}
@@ -56,20 +55,7 @@ metadata {
 		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
 
-/*	tiles {
-		standardTile("smoke", "device.smoke", width: 2, height: 2) {
-			state("clear", label: "Clear", icon:"st.alarm.smoke.clear", backgroundColor:"#ffffff")
-			state("detected", label: "Smoke!", icon:"st.alarm.smoke.smoke", backgroundColor:"#e86d13")
-		}
-		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 1, height: 1) {
-			state "default", action: "refresh.refresh", icon: "st.secondary.refresh"
-		}
-		main "smoke"
-		details(["smoke","refresh"])
-	}
-} */
-
-  tiles(scale: 2) {
+  	tiles(scale: 2) {
 		multiAttributeTile(name:"smoke", type: "lighting", width: 6, height: 4) {
 			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
            			attributeState( "clear", label:'CLEAR', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#00a0dc")
@@ -88,7 +74,8 @@ metadata {
 				attributeState( "detected", label:'GAS DETECTED!', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Event.png", backgroundColor:"#ed0000")   
  			}
 		}
-        	valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
+        	
+	  	valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
             		state "battery", label:'99%'+"\n", unit:"%", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png",
 				backgroundColors:[
 					[value: 0, color: "#ff1800"],
@@ -98,21 +85,18 @@ metadata {
 					[value: 75, color: "#33d800"]
 				]
 		}
-		valueTile("lastCheckin", "device.lastCheckin",  inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-			state "default", label:'', icon: "st.Health & Wellness.health9", backgroundColor: "#ceec24"
-		}
-		valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+		
+	  	valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last GAS Detected:\n ${currentValue}'
 		}
-		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
-		    	state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
-    		}
-		valueTile("lastTested", "device.lastTested", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
+		
+	  	valueTile("lastTested", "device.lastTested", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last Tested:\n ${currentValue}'
 		}
-		valueTile("lastDescription", "device.lastDescription", inactiveLabel: false, decoration: "flat", width: 4, height: 1) {
-        		state "default", label:'${currentValue}'
-		}
+		
+	  	standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
+		    	state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
+    		}
 		
 		main (["smoke2"])
 		details(["smoke", "lastSmoke", "lastTested", "refresh"])
@@ -125,6 +109,7 @@ def installed() {
 }
 
 def parse(String description) {
+
 	log.debug "${device.displayName}: Parsing description: ${description}"
 
 	// Determine current time and date in the user-selected date format and clock style
@@ -135,54 +120,30 @@ def parse(String description) {
 	// However, only a non-parseable report results in lastCheckin being displayed in events log
 	sendEvent(name: "lastCheckin", value: now, displayed: true)
 	sendEvent(name: "lastCheckinDate", value: nowDate, displayed: false)
-	sendEvent(name: "lastDescription", value: description, displayed: false)
 
-// Got this far !!!
-  def map = zigbee.getEvent(description)
+	log.debug "description(): $description"
+	def map = zigbee.getEvent(description)
+
 	if (!map) {
-	if (description?.startsWith('zone status')) {
-		map = parseZoneStatusMessage(description)
-		if (map.value == "detected") {
-			sendEvent(name: "lastSmoke", value: now, displayed: true)
-			sendEvent(name: "lastSmokeDate", value: nowDate, displayed: false)
-			sendEvent(name: "lastDescription", value: map.descriptionText, displayed: false)
-		} else if (map.value == "tested") {
-			sendEvent(name: "lastTested", value: now, displayed: true)
-			sendEvent(name: "lastTestedDate", value: nowDate, displayed: false)
-			sendEvent(name: "lastDescription", value: map.descriptionText, displayed: false)
-		}
-	} else if (description?.startsWith('catchall:')) {
-		map = parseCatchAllMessage(description)
-	} else if (description?.startsWith('read attr - raw:')) {
-		map = parseReadAttr(description)
-	} else if (description?.startsWith('enroll request')) {
-		List cmds = zigbee.enrollResponse()
-		log.debug "enroll response: ${cmds}"
-		result = cmds?.collect { new physicalgraph.device.HubAction(it) }
-	} else {
-		log.debug "${device.displayName}: was unable to parse ${description}"
-		sendEvent(name: "lastCheckin", value: now, displayed: true) 
-	}
-	if (map) {
-		log.debug "${device.displayName}: Parse returned ${map}"
-		return createEvent(map)
-	} else {
-		return [:]
-	}
-// ========
-
-
-if (description?.startsWith('zone status')) {
+		if (description?.startsWith('zone status')) {
 			map = parseIasMessage(description)
+			if (map.value == "detected") {
+				sendEvent(name: "lastSmoke", value: now, displayed: true)
+				sendEvent(name: "lastSmokeDate", value: nowDate, displayed: false)
+			} else if (map.value == "tested") {
+				sendEvent(name: "lastTested", value: now, displayed: true)
+				sendEvent(name: "lastTestedDate", value: nowDate, displayed: false)
+			}
 		} else {
 			map = zigbee.parseDescriptionAsMap(description)
 		}
 	}
+
 	log.debug "Parse returned $map"
 	def result = map ? createEvent(map) : [:]
 	if (description?.startsWith('enroll request')) {
 		List cmds = zigbee.enrollResponse()
-		log.debug "Enroll Response: ${cmds}"
+		log.debug "enroll response: ${cmds}"
 		result = cmds?.collect { new physicalgraph.device.HubAction(it)}
 	}
 	return result
@@ -190,41 +151,18 @@ if (description?.startsWith('zone status')) {
 
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set())
-
-/// Got This far !!!
-	def result = [
-		name: 'smoke',
-		value: value,
-		descriptionText: 'Gas detected',
-		displayed: true
-	]
-	if (description?.startsWith('zone status')) {
-		if (description?.startsWith('zone status 0x0002')) { // User Test
-			result.value = "tested"
-			result.descriptionText = "${device.displayName} has been tested"
-		} else if (description?.startsWith('zone status 0x0001')) { // gas detected
-			result.value = "detected"
-			result.descriptionText = "${device.displayName} has detected gas!!!"
-		} else if (description?.startsWith('zone status 0x0000')) { // situation normal... no gas
-			result.value = "clear"
-			result.descriptionText = "${device.displayName} is all clear"
-		}
-		return result
+	if (zs.isAlarm1Set()) {
+		def detected = 'detected'
+	} else if (zs.isAlarm2Set()) {
+		def detected = 'tested'
+	} else {
+		def detected = 'clear'
 	}
-	return [:]
-
-// =====================
-
-}
-
-def getDetectedResult(value) {
-	def detected = value ? 'detected': 'clear'
-	String descriptionText = "${device.displayName} smoke ${detected}"
+	String descriptionText = "${device.displayName} Gas ${detected}"
 	return [name:'smoke',
-			value: detected,
-			descriptionText:descriptionText,
-			translatable:true]
+		value: detected,
+		descriptionText:descriptionText,
+		translatable:true]
 }
 
 def refresh() {
