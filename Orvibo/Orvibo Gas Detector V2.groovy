@@ -116,14 +116,14 @@ def parse(String description) {
 	def now = formatDate()    
 	def nowDate = new Date(now).getTime()
 
+	log.debug "description(): $description"
+	def map = zigbee.getEvent(description)
+
 	// Any report - test, smoke, clear in a lastCheckin event and update to Last Checkin tile
 	// However, only a non-parseable report results in lastCheckin being displayed in events log
 	sendEvent(name: "lastCheckin", value: now, displayed: true)
 	sendEvent(name: "lastCheckinDate", value: nowDate, displayed: false)
-
-	log.debug "description(): $description"
-	def map = zigbee.getEvent(description)
-
+	
 	if (!map) {
 		if (description?.startsWith('zone status')) {
 			map = parseIasMessage(description)
@@ -150,19 +150,20 @@ def parse(String description) {
 }
 
 def parseIasMessage(String description) {
+	String detected
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
 	if (zs.isAlarm1Set()) {
-		def detected = 'detected'
+		detected = 'detected'
 	} else if (zs.isAlarm2Set()) {
-		def detected = 'tested'
+		detected = 'tested'
 	} else {
-		def detected = 'clear'
+		detected = 'clear'
 	}
 	String descriptionText = "${device.displayName} Gas ${detected}"
 	return [name:'smoke',
 		value: detected,
-		descriptionText:descriptionText,
-		translatable:true]
+		descriptionText: descriptionText,
+		translatable: True]
 }
 
 def refresh() {
@@ -191,5 +192,5 @@ def ping() {
 
 def configure() {
 	log.debug "configure"
-	sendEvent(name: "checkInterval", value: 30 * 60 + 2 * 60, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID, offlinePingable: "1"])
+	sendEvent(name: "checkInterval", value: 30 * 60 + 2 * 60, displayed: False, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID, offlinePingable: "1"])
 }
