@@ -63,10 +63,10 @@ metadata {
 
     tiles {
         standardTile("alarm", "device.alarm", width: 2, height: 2) {
-            state "off", label:'off', action:'alarm.both', icon:"st.alarm.alarm.alarm", backgroundColor:"#ffffff"
-            state "strobe", label:'strobe!', action:'alarm.off', icon:"st.Lighting.light11", backgroundColor:"#e86d13"
-            state "siren", label:'siren!', action:'alarm.off', icon:"st.alarm.alarm.alarm", backgroundColor:"#e86d13"
-            state "both", label:'alarm!', action:'alarm.off', icon:"st.alarm.alarm.alarm", backgroundColor:"#e86d13"
+            state "off", label:'off', action:'alarm.both', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-off-icon.png", backgroundColor:"#ffffff"
+            state "strobe", label:'strobe!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-test-icon.png", backgroundColor:"#e86d13"
+            state "siren", label:'siren!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-icon.png", backgroundColor:"#e86d13"
+            state "both", label:'alarm!', action:'alarm.off', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-strobe-icon.png", backgroundColor:"#e86d13"
         }
         standardTile("strobe", "device.alarm", inactiveLabel: false, decoration: "flat") {
             state "default", label:'', action:"alarm.strobe", icon:"st.secondary.strobe"
