@@ -14,15 +14,15 @@ Model: WA105DBZ-1
 - Switch
 - Tone
 
-**MAIN SCREEN
+**MAIN SCREEN**
 
 <img src="https://github.com/castlecole/customdevices/blob/master/GoControl/MainScreen.png" width="281px" height="500px" />
 
 The main screen displays the current state of the device and allows you to turn on/off the Siren, Strobe, Siren/Strobe and also play the Beep tone.
 
-**_Be aware that there are settings that can override the functionality of the siren, strobe, and both buttons.
+**_Be aware that there are settings that can override the functionality of the siren, strobe, and both buttons._**
 
-**SETTINGS
+**SETTINGS**
 
 <img src="https://github.com/castlecole/customdevices/blob/master/GoControl/Settings1.png" width="281px" height="500px" /> <img src="https://github.com/castlecole/customdevices/blob/master/GoControl/Settings2.png" width="281px" height="500px" />
  
