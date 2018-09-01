@@ -2,10 +2,7 @@
 
 Device Handler for the GoControl Siren, Linear Siren and possibly some other generic sirens.
 Model: WA105DBZ-1
-
 <img src="https://github.com/castlecole/customdevices/blob/master/GoControl/GoControl_Siren.jpg" width="360px" height="360px" />
-
-
 ### This device handler supports the following capabilities:
 - Alarm
 - Battery
@@ -20,11 +17,11 @@ Model: WA105DBZ-1
 
 The main screen displays the current state of the device and allows you to turn on/off the Siren, Strobe, Siren/Strobe and also play the Beep tone.
 
-**_Be aware that there are settings that can override the functionality of the siren, strobe, and both buttons._**
-
 **SETTINGS**
 
-<img src="https://github.com/castlecole/customdevices/blob/master/GoControl/Settings1.png" width="281px" height="500px" /> <img src="https://github.com/castlecole/customdevices/blob/master/GoControl/Settings2.png" width="281px" height="500px" />
+**_NB: There are settings that can override the functionality of the siren, strobe, and both buttons._**
+
+<img src="https://github.com/castlecole/customdevices/blob/master/GoControl/Settings1.png" width="281px" height="500px" />    <img src="https://github.com/castlecole/customdevices/blob/master/GoControl/Settings2.png" width="281px" height="500px" />
  
 
 ### Automatically turn off after:
@@ -88,7 +85,7 @@ _(The content in parenthesis provide additional information and is not part of t
 - strobe #, # (delaySeconds, autoOffSeconds) 
 
 ### Examples:
-- Perform 250 millisecond beep: beep 250, 0, false
+- Perform 250 millisecond beep: **beep 250, 0, false**
 - Wait 15 seconds and then perform 100 millisecond beep: **beep 100, 15, false**
 - Strobe for 15 seconds and then perform 100 millisecond beep: **beep 100, 15, true**
 - Turn on siren and strobe immediately and turn off in 30 seconds: **strobe 0, 30, false**
