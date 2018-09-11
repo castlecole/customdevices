@@ -75,17 +75,6 @@ metadata {
  			}
 		}
         	
-	  	valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false, width: 2, height: 2) {
-            		state "battery", label:'99%'+"\n", unit:"%", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Battery.png",
-				backgroundColors:[
-					[value: 0, color: "#ff1800"],
-					[value: 10, color: "#fb854a"],
-					[value: 25, color: "#ceec24"],
-					[value: 50, color: "#71f044"],
-					[value: 75, color: "#33d800"]
-				]
-		}
-		
 	  	valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last GAS Detected:\n ${currentValue}'
 		}
@@ -150,20 +139,31 @@ def parse(String description) {
 }
 
 def parseIasMessage(String description) {
-	String detected
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	if (zs.isAlarm1Set()) {
+	return getDetectedResult(zs.isAlarm1Set(), zs.isAlarm2Set())
+}
+
+def getDetectedResult(value1, value2) {
+	
+	def detected = ''
+
+	def detected1 = value1 ? 'detected': 'clear'
+	def detected2 = value2 ? 'detected': 'clear'
+
+	if (detected1='detected') {
 		detected = 'detected'
-	} else if (zs.isAlarm2Set()) {
+	} else if (detected2='detected') {
 		detected = 'tested'
 	} else {
 		detected = 'clear'
 	}
+
 	String descriptionText = "${device.displayName} Gas ${detected}"
+	
 	return [name:'smoke',
 		value: detected,
-		descriptionText: descriptionText,
-		translatable: True]
+		descriptionText:descriptionText,
+		translatable:true]
 }
 
 def refresh() {
