@@ -26,7 +26,11 @@
  *  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
- 
+
+def version() {
+	return "v2 (20180911)\nForcible Mobile Presence"
+}
+
 metadata {
 	definition (name: "Forcible Mobile Presence", namespace: "castlecole", author: "SmartThings, Kevin LaFramboise") {
 		capability "Presence Sensor"
@@ -41,19 +45,24 @@ metadata {
 		status "not present": "presence: 0"
 	}
 
+	preferences {
+		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
+	}
+
 	tiles(scale: 2) {
 		standardTile("presence", "device.presence", width: 4, height: 4, canChangeBackground: true) {
-			state("present", labelIcon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-icon.png", backgroundColor:"#53a7c0")
-			state("not present", labelIcon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-no-icon.png", backgroundColor:"#ebeef2")
+			state("present", label: 'Present", Icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-icon.png", backgroundColor:"#53a7c0")
+			state("not present", label: 'Away', Icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/presence-no-icon.png", backgroundColor:"#ebeef2")
 		}
+		
 		standardTile("setArrived", "generic", width: 2, height: 2) {
-      state "default", label:'Arrive', 
-				action:"arrived"
-    }
+      			state "default", label:'Arrive', action:"arrived"
+    		}
+		
 		standardTile("setDeparted", "generic", width: 2, height: 2) {
-      state "default", label:'Depart', 
-				action:"departed"
-    }
+      			state "default", label:'Depart', action:"departed"
+    		}
+		
 		main "presence"
 		details(["presence", "setArrived", "setDeparted"])
 	}
