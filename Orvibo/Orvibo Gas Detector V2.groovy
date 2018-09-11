@@ -150,9 +150,9 @@ def getDetectedResult(value1, value2) {
 	def detected1 = value1 ? 'detected': 'clear'
 	def detected2 = value2 ? 'detected': 'clear'
 
-	if (detected1='detected') {
+	if (detected1=='detected') {
 		detected = 'detected'
-	} else if (detected2='detected') {
+	} else if (detected2=='detected') {
 		detected = 'tested'
 	} else {
 		detected = 'clear'
