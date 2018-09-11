@@ -18,6 +18,10 @@
 import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 import physicalgraph.zigbee.zcl.DataType
 
+def version() {
+	return "v1 (20180827)\nOrvibo Gas Detector"
+}
+
 metadata {
 	definition(name: "Orvibo Gas Detector", namespace: "castlecole", author: "SmartThings", runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false, mnmn: "SmartThings", vid: "generic-smoke") {
 		capability "Smoke Detector"
@@ -26,8 +30,19 @@ metadata {
 		capability "Sensor"
 		capability "Refresh"
 		fingerprint profileId: "0104", deviceId: "0402", inClusters: "0000, 0003, 0500, 0009", outClusters: "0019", manufacturer: "Heiman", model:"d0e857bfd54f4a12816295db3945a421"
+
+		attribute "lastCheckinDate", "Date"		
+		attribute "lastCheckin", "string"
 	}
 
+	preferences {
+		//Date & Time Config
+		input description: "", type: "paragraph", element: "paragraph", title: "DATE & CLOCK"    
+		input name: "dateformat", type: "enum", title: "Set Date Format\nUS (MDY) - UK (DMY) - Other (YMD)", description: "Date Format", options:["US","UK","Other"]
+		input name: "clockformat", type: "bool", title: "Use 24 hour clock?"
+		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
+	}
+	
 	simulator {
 		status "active": "zone status 0x0001 -- extended status 0x00"
 	}
@@ -40,17 +55,65 @@ metadata {
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 1, height: 1) {
 			state "default", action: "refresh.refresh", icon: "st.secondary.refresh"
 		}
-		main "smoke"
+
+		multiAttributeTile(name:"smoke", type: "lighting", width: 6, height: 4) {
+			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
+           			attributeState( "clear", label:'CLEAR', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#00a0dc")
+				attributeState( "tested", label:"TESTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#e86d13")
+				attributeState( "detected", label:'GAS DETECTED!', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png", backgroundColor:"#ed0000")   
+ 			}
+			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
+				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
+			}
+		}
+
+		multiAttributeTile(name:"smoke2", type: "lighting", width: 6, height: 4) {
+			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
+   				attributeState( "clear", label:'CLEAR', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Normal.png", backgroundColor:"#00a0dc")
+				attributeState( "tested", label:"TESTED!", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Event.png", backgroundColor:"#e86d13")
+				attributeState( "detected", label:'GAS DETECTED!', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Event.png", backgroundColor:"#ed0000")   
+ 			}
+		}
+        	
+/*	  	valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
+        		state "default", label:'Last GAS Detected:\n ${currentValue}'
+		}
+		
+	  	valueTile("lastTested", "device.lastTested", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
+        		state "default", label:'Last Tested:\n ${currentValue}'
+		}
+*/		
+	  	standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
+		    	state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
+    		}
+		
+//		main (["smoke2"])
+//		details(["smoke", "lastSmoke", "lastTested", "refresh"])
+
+		main "smoke2"
 		details(["smoke","refresh"])
 	}
 }
+
 def installed() {
 	log.debug "installed"
 	refresh()
 }
+
 def parse(String description) {
+
+	// Determine current time and date in the user-selected date format and clock style
+	def now = formatDate()    
+	def nowDate = new Date(now).getTime()
+
 	log.debug "description(): $description"
 	def map = zigbee.getEvent(description)
+
+	// Any report - test, smoke, clear in a lastCheckin event and update to Last Checkin tile
+	// However, only a non-parseable report results in lastCheckin being displayed in events log
+	sendEvent(name: "lastCheckin", value: now, displayed: true)
+	sendEvent(name: "lastCheckinDate", value: nowDate, displayed: false)
+
 	if (!map) {
 		if (description?.startsWith('zone status')) {
 			map = parseIasMessage(description)
@@ -67,24 +130,28 @@ def parse(String description) {
 	}
 	return result
 }
+
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
 	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set())
 }
+
 def getDetectedResult(value) {
 	def detected = value ? 'detected': 'clear'
-	String descriptionText = "${device.displayName} smoke ${detected}"
+	String descriptionText = "${device.displayName} GAS ${detected}"
 	return [name:'smoke',
-			value: detected,
-			descriptionText:descriptionText,
-			translatable:true]
+		value: detected,
+		descriptionText:descriptionText,
+		translatable:true]
 }
+
 def refresh() {
 	log.debug "Refreshing Values"
 	def refreshCmds = []
 	refreshCmds += zigbee.readAttribute(zigbee.IAS_ZONE_CLUSTER, zigbee.ATTRIBUTE_IAS_ZONE_STATUS)
 	return refreshCmds
 }
+
 /**
  * PING is used by Device-Watch in attempt to reach the Device
  * */
@@ -92,6 +159,7 @@ def ping() {
 	log.debug "ping"
 	refresh()
 }
+
 def configure() {
 	log.debug "configure"
 	sendEvent(name: "checkInterval", value: 30 * 60 + 2 * 60, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID, offlinePingable: "1"])
