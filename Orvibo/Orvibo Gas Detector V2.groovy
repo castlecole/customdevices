@@ -87,7 +87,7 @@ metadata {
         	}
 
         	standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-            		state "default", action:"resetClear", label:'Override Smoke', icon:"st.alarm.smoke.clear"
+            		state "default", action:"resetClear", label:'Override Gas', icon:"st.alarm.smoke.clear"
 		}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
