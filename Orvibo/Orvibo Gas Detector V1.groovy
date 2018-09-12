@@ -18,6 +18,10 @@
 import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 import physicalgraph.zigbee.zcl.DataType
 
+def version() {
+	return "v1 (20180827)\nOrvibo Gas Detector"
+}
+
 metadata {
 	definition(name: "Orvibo Gas Detector", namespace: "smartthings", author: "SmartThings", runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false, mnmn: "SmartThings", vid: "generic-smoke") {
 		capability "Smoke Detector"
@@ -26,6 +30,10 @@ metadata {
 		capability "Sensor"
 		capability "Refresh"
 		fingerprint profileId: "0104", deviceId: "0402", inClusters: "0000, 0003, 0500, 0009", outClusters: "0019", manufacturer: "Heiman", model:"d0e857bfd54f4a12816295db3945a421"
+	}
+
+	preferences {
+		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
 
 	simulator {
