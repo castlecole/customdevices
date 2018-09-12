@@ -19,32 +19,27 @@ import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 import physicalgraph.zigbee.zcl.DataType
 
 def version() {
-	return "v2 (20180827)\nOrvibo Gas Detector"
+	return "v2 (20180912)\nOrvibo Gas Detector"
 }
 
 metadata {
-	definition(name: "Orvibo Gas Detector V2", namespace: "castlecole", author: "SmartThings", runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false, mnmn: "SmartThings", vid: "generic-smoke") {
+	definition(name: "Orvibo Gas Detector", namespace: "castlecole", author: "SmartThings", runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false, mnmn: "SmartThings", vid: "generic-smoke") {
 		capability "Smoke Detector"
 		capability "Configuration"
 		capability "Health Check"
 		capability "Sensor"
 		capability "Refresh"
-    
-   		command "resetClear"
-		command "resetSmoke"
+		fingerprint profileId: "0104", deviceId: "0402", inClusters: "0000, 0003, 0500, 0009", outClusters: "0019", manufacturer: "Heiman", model:"d0e857bfd54f4a12816295db3945a421"
 
-    		attribute "lastTested", "String"
-		attribute "lastTestedDate", "Date"
 		attribute "lastCheckinDate", "Date"		
 		attribute "lastCheckin", "string"
-		attribute "lastSmoke", "String"
-		attribute "lastSmokeDate", "Date"
-    
-		fingerprint profileId: "0104", deviceId: "0402", inClusters: "0000, 0003, 0500, 0009", outClusters: "0019", manufacturer: "Heiman", model:"d0e857bfd54f4a12816295db3945a421"
-	}
+		attribute "lastTested", "String"
+		attribute "lastTestedDate", "Date"
+		attribute "lastGas", "String"
+		attribute "lastGasDate", "Date"		
 
-	simulator {
-		status "active": "Zone Status 0x0001 -- extended status 0x00"
+		command "resetClear"
+		command "resetSmoke"
 	}
 
 	preferences {
@@ -54,8 +49,12 @@ metadata {
 		input name: "clockformat", type: "bool", title: "Use 24 hour clock?"
 		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
+	
+	simulator {
+		status "active": "zone status 0x0001 -- extended status 0x00"
+	}
 
-  	tiles(scale: 2) {
+	tiles(scale: 2) {
 		multiAttributeTile(name:"smoke", type: "lighting", width: 6, height: 4) {
 			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
            			attributeState( "clear", label:'CLEAR', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#00a0dc")
@@ -75,7 +74,7 @@ metadata {
  			}
 		}
         	
-	  	valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
+	  	valueTile("lastGas", "device.lastGas", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last GAS Detected:\n ${currentValue}'
 		}
 		
@@ -83,12 +82,21 @@ metadata {
         		state "default", label:'Last Tested:\n ${currentValue}'
 		}
 		
-	  	standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
+		standardTile("resetClear", "device.resetSmoke", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
+            		state "default", action:"resetSmoke", label:'Override Clear', icon:"st.alarm.smoke.smoke"
+        	}
+
+        	standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
+            		state "default", action:"resetClear", label:'Override Smoke', icon:"st.alarm.smoke.clear"
+		}
+
+		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
 		    	state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
     		}
 		
 		main (["smoke2"])
-		details(["smoke", "lastSmoke", "lastTested", "refresh"])
+		details(["smoke", "lastGas", "lastTested", "refresh", "resetClear", "resetSmoke"])
+
 	}
 }
 
@@ -98,8 +106,6 @@ def installed() {
 }
 
 def parse(String description) {
-
-	log.debug "${device.displayName}: Parsing description: ${description}"
 
 	// Determine current time and date in the user-selected date format and clock style
 	def now = formatDate()    
@@ -112,22 +118,21 @@ def parse(String description) {
 	// However, only a non-parseable report results in lastCheckin being displayed in events log
 	sendEvent(name: "lastCheckin", value: now, displayed: true)
 	sendEvent(name: "lastCheckinDate", value: nowDate, displayed: false)
-	
+
 	if (!map) {
 		if (description?.startsWith('zone status')) {
 			map = parseIasMessage(description)
 			if (map.value == "detected") {
-				sendEvent(name: "lastSmoke", value: now, displayed: true)
-				sendEvent(name: "lastSmokeDate", value: nowDate, displayed: false)
+				sendEvent(name: "lastGas", value: now, displayed: false)
+				sendEvent(name: "lastGasDate", value: nowDate, displayed: false)
 			} else if (map.value == "tested") {
-				sendEvent(name: "lastTested", value: now, displayed: true)
+				sendEvent(name: "lastTested", value: now, displayed: false)
 				sendEvent(name: "lastTestedDate", value: nowDate, displayed: false)
 			}
 		} else {
 			map = zigbee.parseDescriptionAsMap(description)
 		}
 	}
-
 	log.debug "Parse returned $map"
 	def result = map ? createEvent(map) : [:]
 	if (description?.startsWith('enroll request')) {
@@ -140,26 +145,12 @@ def parse(String description) {
 
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	return getDetectedResult(zs.isAlarm1Set(), zs.isAlarm2Set())
+	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set())
 }
 
-def getDetectedResult(value1, value2) {
-	
-	def detected = ''
-
-	def detected1 = value1 ? 'detected': 'clear'
-	def detected2 = value2 ? 'detected': 'clear'
-
-	if (detected1=='detected') {
-		detected = 'detected'
-	} else if (detected2=='detected') {
-		detected = 'tested'
-	} else {
-		detected = 'clear'
-	}
-
-	String descriptionText = "${device.displayName} Gas ${detected}"
-	
+def getDetectedResult(value) {
+	def detected = value ? 'detected': 'clear'
+	String descriptionText = "${device.displayName} GAS ${detected}"
 	return [name:'smoke',
 		value: detected,
 		descriptionText:descriptionText,
@@ -174,13 +165,12 @@ def refresh() {
 }
 
 def resetClear() {
-    sendEvent(name:"smoke", value:"clear", display: false)
+	sendEvent(name:"smoke", value:"clear", displayed: true)
 }
 
 def resetSmoke() {
-    sendEvent(name:"smoke", value:"smoke", display: false)
+	sendEvent(name:"smoke", value:"smoke", displayed: true)
 }
-
 
 /**
  * PING is used by Device-Watch in attempt to reach the Device
@@ -192,5 +182,38 @@ def ping() {
 
 def configure() {
 	log.debug "configure"
-	sendEvent(name: "checkInterval", value: 30 * 60 + 2 * 60, displayed: False, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID, offlinePingable: "1"])
+	sendEvent(name: "checkInterval", value: 30 * 60 + 2 * 60, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID, offlinePingable: "1"])
+}
+
+def formatDate(batteryReset) {
+	def correctedTimezone = ""
+	def timeString = clockformat ? "HH:mm:ss" : "h:mm:ss aa"
+
+	// If user's hub timezone is not set, display error messages in log and events log, and set timezone to GMT to avoid errors
+	if (!(location.timeZone)) {
+		correctedTimezone = TimeZone.getTimeZone("GMT")
+		log.error "${device.displayName}: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app."
+		sendEvent(name: "error", value: "", descriptionText: "ERROR: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app.")
+	} else {
+		correctedTimezone = location.timeZone
+	}
+	if (dateformat == "US" || dateformat == "" || dateformat == null) {
+		if (batteryReset){
+			return new Date().format("MMM dd yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE MMM dd yyyy ${timeString}", correctedTimezone)
+		}
+	} else if (dateformat == "UK") {
+		if (batteryReset) {
+			return new Date().format("dd MMM yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE dd MMM yyyy ${timeString}", correctedTimezone)
+		}
+	} else {
+		if (batteryReset) {
+			return new Date().format("yyyy MMM dd", correctedTimezone)
+		} else {
+			return new Date().format("EEE yyyy MMM dd ${timeString}", correctedTimezone)
+		}
+	}
 }
