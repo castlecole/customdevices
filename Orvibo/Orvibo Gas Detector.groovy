@@ -33,6 +33,13 @@ metadata {
 
 		attribute "lastCheckinDate", "Date"		
 		attribute "lastCheckin", "string"
+		attribute "lastTested", "String"
+		attribute "lastTestedDate", "Date"
+		attribute "lastGas", "String"
+		attribute "lastGasDate", "Date"		
+
+		command "resetClear"
+		command "resetSmoke"
 	}
 
 	preferences {
@@ -75,23 +82,29 @@ metadata {
  			}
 		}
         	
-/*	  	valueTile("lastSmoke", "device.lastSmoke", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
+	  	valueTile("lastGas", "device.lastGas", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last GAS Detected:\n ${currentValue}'
 		}
 		
 	  	valueTile("lastTested", "device.lastTested", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last Tested:\n ${currentValue}'
 		}
-*/		
-	  	standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
+		
+		standardTile("resetClear", "device.resetSmoke", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
+            		state "default", action:"resetSmoke", label:'Override Clear', icon:"st.alarm.smoke.smoke"
+        	}
+
+        	standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
+            		state "default", action:"resetClear", label:'Override Smoke', icon:"st.alarm.smoke.clear"
+		}
+
+		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
 		    	state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
     		}
 		
-//		main (["smoke2"])
-//		details(["smoke", "lastSmoke", "lastTested", "refresh"])
+		main (["smoke2"])
+		details(["smoke", "lastGas", "lastTested", "refresh", "resetClear", "resetSmoke"])
 
-		main "smoke2"
-		details(["smoke","refresh"])
 	}
 }
 
@@ -117,6 +130,13 @@ def parse(String description) {
 	if (!map) {
 		if (description?.startsWith('zone status')) {
 			map = parseIasMessage(description)
+			if (map.value == "detected") {
+				sendEvent(name: "lastGas", value: now, displayed: false)
+				sendEvent(name: "lastGasDate", value: nowDate, displayed: false)
+			} else if (map.value == "tested") {
+				sendEvent(name: "lastTested", value: now, displayed: false)
+				sendEvent(name: "lastTestedDate", value: nowDate, displayed: false)
+			}
 		} else {
 			map = zigbee.parseDescriptionAsMap(description)
 		}
@@ -150,6 +170,14 @@ def refresh() {
 	def refreshCmds = []
 	refreshCmds += zigbee.readAttribute(zigbee.IAS_ZONE_CLUSTER, zigbee.ATTRIBUTE_IAS_ZONE_STATUS)
 	return refreshCmds
+}
+
+def resetClear() {
+	sendEvent(name:"smoke", value:"clear", displayed: true)
+}
+
+def resetSmoke() {
+	sendEvent(name:"smoke", value:"smoke", displayed: true)
 }
 
 /**
