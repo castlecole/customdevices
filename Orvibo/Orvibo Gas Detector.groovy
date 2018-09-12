@@ -19,7 +19,7 @@ import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 import physicalgraph.zigbee.zcl.DataType
 
 def version() {
-	return "v1 (20180827)\nOrvibo Gas Detector"
+	return "v2 (20180912)\nOrvibo Gas Detector"
 }
 
 metadata {
@@ -55,14 +55,6 @@ metadata {
 	}
 
 	tiles(scale: 2) {
-/*		standardTile("smoke", "device.smoke", width: 2, height: 2) {
-			state("clear", label: "Clear", icon:"st.alarm.smoke.clear", backgroundColor:"#ffffff")
-			state("detected", label: "Smoke!", icon:"st.alarm.smoke.smoke", backgroundColor:"#e86d13")
-		}
-		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 1, height: 1) {
-			state "default", action: "refresh.refresh", icon: "st.secondary.refresh"
-		}
-*/
 		multiAttributeTile(name:"smoke", type: "lighting", width: 6, height: 4) {
 			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
            			attributeState( "clear", label:'CLEAR', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#00a0dc")
