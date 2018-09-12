@@ -47,15 +47,15 @@ metadata {
 		status "active": "zone status 0x0001 -- extended status 0x00"
 	}
 
-	tiles {
-		standardTile("smoke", "device.smoke", width: 2, height: 2) {
+	tiles(scale: 2) {
+/*		standardTile("smoke", "device.smoke", width: 2, height: 2) {
 			state("clear", label: "Clear", icon:"st.alarm.smoke.clear", backgroundColor:"#ffffff")
 			state("detected", label: "Smoke!", icon:"st.alarm.smoke.smoke", backgroundColor:"#e86d13")
 		}
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 1, height: 1) {
 			state "default", action: "refresh.refresh", icon: "st.secondary.refresh"
 		}
-
+*/
 		multiAttributeTile(name:"smoke", type: "lighting", width: 6, height: 4) {
 			tileAttribute ("device.smoke", key: "PRIMARY_CONTROL") {
            			attributeState( "clear", label:'CLEAR', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png", backgroundColor:"#00a0dc")
@@ -163,4 +163,37 @@ def ping() {
 def configure() {
 	log.debug "configure"
 	sendEvent(name: "checkInterval", value: 30 * 60 + 2 * 60, displayed: false, data: [protocol: "zigbee", hubHardwareId: device.hub.hardwareID, offlinePingable: "1"])
+}
+
+def formatDate(batteryReset) {
+	def correctedTimezone = ""
+	def timeString = clockformat ? "HH:mm:ss" : "h:mm:ss aa"
+
+	// If user's hub timezone is not set, display error messages in log and events log, and set timezone to GMT to avoid errors
+	if (!(location.timeZone)) {
+		correctedTimezone = TimeZone.getTimeZone("GMT")
+		log.error "${device.displayName}: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app."
+		sendEvent(name: "error", value: "", descriptionText: "ERROR: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app.")
+	} else {
+		correctedTimezone = location.timeZone
+	}
+	if (dateformat == "US" || dateformat == "" || dateformat == null) {
+		if (batteryReset){
+			return new Date().format("MMM dd yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE MMM dd yyyy ${timeString}", correctedTimezone)
+		}
+	} else if (dateformat == "UK") {
+		if (batteryReset) {
+			return new Date().format("dd MMM yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE dd MMM yyyy ${timeString}", correctedTimezone)
+		}
+	} else {
+		if (batteryReset) {
+			return new Date().format("yyyy MMM dd", correctedTimezone)
+		} else {
+			return new Date().format("EEE yyyy MMM dd ${timeString}", correctedTimezone)
+		}
+	}
 }
