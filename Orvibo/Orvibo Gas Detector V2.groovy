@@ -145,11 +145,21 @@ def parse(String description) {
 
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set())
+	return getDetectedResult(zs.isAlarm1Set(), zs.isAlarm2Set())
 }
 
-def getDetectedResult(value) {
-	def detected = value ? 'detected': 'clear'
+def getDetectedResult(value1, value2) {
+	def detected1 = value1 ? 'detected' : 'clear'
+	def detected2 = value2 ? 'detected' : 'clear'
+	
+	if (detected1 == 'detected') {
+		def detected = 'detected'
+	} elseif (detected2 == 'detected') {
+		def detected = 'tested'
+	} else {
+		def detected = 'clear'
+	}
+	
 	String descriptionText = "${device.displayName} GAS ${detected}"
 	return [name:'smoke',
 		value: detected,
@@ -165,11 +175,11 @@ def refresh() {
 }
 
 def resetClear() {
-	sendEvent(name:"smoke", value:"clear", displayed: true)
+	sendEvent(name:"smoke", value:"clear", displayed: false)
 }
 
 def resetSmoke() {
-	sendEvent(name:"smoke", value:"smoke", displayed: true)
+	sendEvent(name:"smoke", value:"Gas", displayed: false)
 }
 
 /**
