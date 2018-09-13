@@ -83,16 +83,16 @@ metadata {
 		}
 		
 		standardTile("resetClear", "device.resetSmoke", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-            		state "default", action:"resetSmoke", label:'Override Clear', icon:"st.alarm.smoke.smoke"
-        	}
+			state "default", action:"resetSmoke", label:'Override Clear', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png"
+		}
 
-        	standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-            		state "default", action:"resetClear", label:'Override Gas', icon:"st.alarm.smoke.clear"
+		standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
+			state "default", action:"resetClear", label:'Override Gas', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png"
 		}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
-		    	state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
-    		}
+			state "default", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
+		}
 		
 		main (["smoke2"])
 		details(["smoke", "lastGas", "lastTested", "refresh", "resetClear", "resetSmoke"])
