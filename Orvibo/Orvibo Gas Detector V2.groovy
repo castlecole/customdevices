@@ -39,7 +39,6 @@ metadata {
 		attribute "lastGasDate", "Date"		
 
 		command "resetClear"
-		command "resetSmoke"
 	}
 
 	preferences {
@@ -82,12 +81,12 @@ metadata {
         		state "default", label:'Last Tested:\n ${currentValue}'
 		}
 		
-		standardTile("resetClear", "device.resetSmoke", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-			state "default", action:"resetSmoke", label:'Override Clear', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Event_sml.png"
+		standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", action:"resetClear", label:'Override Gas\n Detected Alarm', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Normal_sml.png"
 		}
 
-		standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-			state "default", action:"resetClear", label:'Override Gas', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Normal_sml.png"
+	  	valueTile("blank", "", inactiveLabel: True, decoration: "flat", width: 4, height: 2) {
+        		state "default", label:''
 		}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
@@ -95,7 +94,7 @@ metadata {
 		}
 		
 		main (["smoke2"])
-		details(["smoke", "lastGas", "lastTested", "refresh", "resetClear", "resetSmoke"])
+		details(["smoke", "lastGas", "lastTested", "resetSmoke", "blank", "refresh"])
 
 	}
 }
@@ -145,7 +144,7 @@ def parse(String description) {
 
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set(), zs.isTestSet())
+	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set())
 }
 
 def getDetectedResult(value1, value2) {
@@ -179,9 +178,6 @@ def resetClear() {
 	sendEvent(name:"smoke", value:"clear", displayed: false)
 }
 
-def resetSmoke() {
-	sendEvent(name:"smoke", value:"Gas", displayed: false)
-}
 
 /**
  * PING is used by Device-Watch in attempt to reach the Device
