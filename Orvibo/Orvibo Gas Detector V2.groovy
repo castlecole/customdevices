@@ -154,7 +154,7 @@ def getDetectedResult(value1, value2) {
 	
 	if (detected1 == 'detected') {
 		def detected = 'detected'
-	} elseif (detected2 == 'detected') {
+	} else if (detected2 == 'detected') {
 		def detected = 'tested'
 	} else {
 		def detected = 'clear'
