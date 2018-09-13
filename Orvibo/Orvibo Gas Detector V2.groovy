@@ -83,11 +83,11 @@ metadata {
 		}
 		
 		standardTile("resetClear", "device.resetSmoke", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-			state "default", action:"resetSmoke", label:'Override Clear', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-notclear0.png"
+			state "default", action:"resetSmoke", label:'Override Clear', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Event_sml.png"
 		}
 
 		standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 3, height: 2) {
-			state "default", action:"resetClear", label:'Override Gas', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-clear0.png"
+			state "default", action:"resetClear", label:'Override Gas', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Normal_sml.png"
 		}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: False, decoration: "flat", width: 2, height: 2) {
