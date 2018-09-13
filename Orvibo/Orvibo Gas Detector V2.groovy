@@ -145,19 +145,20 @@ def parse(String description) {
 
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	return getDetectedResult(zs.isAlarm1Set(), zs.isAlarm2Set())
+	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set(), zs.isTestSet())
 }
 
 def getDetectedResult(value1, value2) {
+	def detected = ''
 	def detected1 = value1 ? 'detected' : 'clear'
-	def detected2 = value2 ? 'detected' : 'clear'
+	def detected2 = value2 ? 'tested' : 'clear'
 	
 	if (detected1 == 'detected') {
-		def detected = 'detected'
-	} else if (detected2 == 'detected') {
-		def detected = 'tested'
+		detected = 'detected'
+	} else if (detected2 == 'tested') {
+		detected = 'tested'
 	} else {
-		def detected = 'clear'
+		detected = 'clear'
 	}
 	
 	String descriptionText = "${device.displayName} GAS ${detected}"
