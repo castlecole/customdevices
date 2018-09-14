@@ -19,7 +19,7 @@ import physicalgraph.zigbee.clusters.iaszone.ZoneStatus
 import physicalgraph.zigbee.zcl.DataType
 
 def version() {
-	return "v2 (20180912)\nOrvibo Gas Detector"
+	return "v2 (20180914)\nOrvibo Gas Detector"
 }
 
 metadata {
@@ -148,13 +148,14 @@ def parse(String description) {
 
 def parseIasMessage(String description) {
 	ZoneStatus zs = zigbee.parseZoneStatus(description)
-	return getDetectedResult(zs.isAlarm1Set() || zs.isAlarm2Set())
+	return getDetectedResult(zs.isAlarm1Set(), zs.isAlarm2Set(), zs.isTestSet())
 }
 
-def getDetectedResult(value1, value2) {
+def getDetectedResult(value1, value2, value3) {
 	def detected = ''
 	def detected1 = value1 ? 'detected' : 'clear'
 	def detected2 = value2 ? 'tested' : 'clear'
+	def detected3 = value3 ? 'tested' : 'clear'
 	
 	if (detected1 == 'detected') {
 		detected = 'detected'
