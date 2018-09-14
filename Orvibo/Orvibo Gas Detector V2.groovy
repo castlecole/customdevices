@@ -73,7 +73,11 @@ metadata {
  			}
 		}
         	
-	  	valueTile("lastGas", "device.lastGas", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
+		standardTile("power", "", inactiveLabel: True, decoration: "flat", width: 2, height: 2) {
+			state "default", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Power-Icon.png"
+		}
+
+		valueTile("lastGas", "device.lastGas", inactiveLabel: False, decoration: "flat", width: 4, height: 1) {
         		state "default", label:'Last GAS Detected:\n ${currentValue}'
 		}
 		
@@ -82,10 +86,10 @@ metadata {
 		}
 		
 		standardTile("resetSmoke", "device.resetClear", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-			state "default", action:"resetClear", label:'Override Gas\n Detected Alarm', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Normal_sml.png"
+			state "default", action:"resetClear", label:'Reset Alarm', icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/House-GAS-Normal_sml.png"
 		}
 
-	  	valueTile("blank", "", inactiveLabel: True, decoration: "flat", width: 4, height: 2) {
+	  	valueTile("blank", "", inactiveLabel: True, decoration: "flat", width: 2, height: 2) {
         		state "default", label:''
 		}
 
@@ -94,7 +98,7 @@ metadata {
 		}
 		
 		main (["smoke2"])
-		details(["smoke", "lastGas", "lastTested", "resetSmoke", "blank", "refresh"])
+		details(["smoke", "power", "lastGas", "lastTested", "resetSmoke", "blank", "refresh"])
 
 	}
 }
