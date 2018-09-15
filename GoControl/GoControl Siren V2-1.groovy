@@ -123,7 +123,7 @@
  */
 
 def version() {
-  return "v2 (20180831)\nGoControl Multifunction Siren"
+  return "v2 (20180915)\nGoControl Multifunction Siren\n- Z-Wave"
 }
 
 metadata {
@@ -167,6 +167,7 @@ metadata {
 	}
 
 	preferences {
+		input description: "", type: "paragraph", element: "paragraph", title: "OPTION PARAMETERS"    
 		input "autoOffTime", "enum", 
 			title: "1. Automatically turn off after:\n(You should disable this feature while testing)", 
 			defaultValue: "30 Seconds",
@@ -221,6 +222,11 @@ metadata {
 			defaultValue: true, 
 			displayDuringSetup: true, 
 			required: false
+		//Date & Time Config
+		input description: "", type: "paragraph", element: "paragraph", title: "DATE & CLOCK"    
+		input name: "dateformat", type: "enum", title: "Set Date Format\nUS (MDY) - UK (DMY) - Other (YMD)", description: "Date Format", options:["US","UK","Other"]
+		input name: "clockformat", type: "bool", title: "Use 24 hour clock?"
+
  		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
 
@@ -234,6 +240,12 @@ metadata {
 				attributeState "both", label:'Siren/Strobe On!', action: "off", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/alarm-strobe-icon.png", backgroundColor:"#e86d13"
 				attributeState "beep", label:'Beeping!', action: "off", icon:"st.Entertainment.entertainment2", backgroundColor:"#99ff99"
 			}
+			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
+				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
+			}
+		}
+		standardTile("power", "", inactiveLabel: True, decoration: "flat", width: 2, height: 2) {
+			state "default", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/Power-Icon.png"
 		}
 		standardTile("turnOff", "device.alarm", width: 2, height: 2) {
 			state "default", label:'Off', action: "off", backgroundColor: "#99c2ff", icon:"st.alarm.alarm.alarm", defaultState: true
@@ -244,9 +256,6 @@ metadata {
 			state "default", label:' Beep ', action:"beep", icon:"st.Entertainment.entertainment2", backgroundColor: "#99ff99", defaultState: true
 			state "beep", label:'Beeping', action: "off", icon:"st.Entertainment.entertainment2", backgroundColor: "#99c2ff"			
 		}					
-		valueTile("battery", "device.battery", decoration: "flat", width: 2, height: 2) {
-			state "battery", label:'Battery ${currentValue}%', unit:"", defaultState: true
-		}		
 		standardTile("testSiren", "device.alarm", width: 2, height: 2) {
 			state "default", label:'Siren ', action: "alarm.siren", backgroundColor: "#ff9999", icon:"st.alarm.alarm.alarm", defaultState: true			
 			state "siren", label:' Siren', action: "alarm.off", icon:"st.alarm.alarm.alarm", backgroundColor: "#99c2ff"		
@@ -259,9 +268,12 @@ metadata {
 			state "default", label:' Both ', action: "alarm.both", backgroundColor: "#ff9999", icon:"st.alarm.alarm.alarm", defaultState: true
 			state "both", label:' Both ', action: "alarm.off", backgroundColor: "#99c2ff", icon:"st.alarm.alarm.alarm"
 		}		
+		valueTile("battery", "device.battery", decoration: "flat", width: 2, height: 2) {
+			state "battery", label:'Battery ${currentValue}%', unit:"", defaultState: true
+		}		
 				
 		main "status"
-		details(["status", "testSiren", "testStrobe", "testBoth", "turnOff", "testBeep", "battery"])
+		details(["status", "power", "turnOff", "testBeep", "testSiren", "testStrobe", "testBoth"])
 	}
 }
 
@@ -284,9 +296,7 @@ def updated() {
 private initializeCheckin() {
 	// Set the Health Check interval so that it can be skipped once plus 2 minutes.
 	def checkInterval = ((checkinIntervalSettingMinutes * 2 * 60) + (2 * 60))
-	
 	sendEvent(name: "checkInterval", value: checkInterval, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
-	
 	startHealthPollSchedule()
 }
 
@@ -322,7 +332,6 @@ def healthPoll() {
 
 private canReportBattery() {
 	def reportEveryMS = (batteryReportingIntervalSettingMinutes * 60 * 1000)
-		
 	return (!state.lastBatteryReport || ((new Date().time) - state.lastBatteryReport > reportEveryMS)) 
 }
 
@@ -668,8 +677,19 @@ private secureCmd(cmd) {
 
 // Parses incoming message
 def parse(String description) {	
+
+	// Determine current time and date in the user-selected date format and clock style
+	def now = formatDate()    
+	def nowDate = new Date(now).getTime()
+
 	def result = []
 	def cmd = zwave.parse(description, commandClassVersions)
+
+	// Any report - test, smoke, clear in a lastCheckin event and update to Last Checkin tile
+	// However, only a non-parseable report results in lastCheckin being displayed in events log
+	sendEvent(name: "lastCheckin", value: now, displayed: true)
+	sendEvent(name: "lastCheckinDate", value: nowDate, displayed: false)
+
 	if (cmd) {
 		result += zwaveEvent(cmd)
 	}
@@ -1119,4 +1139,38 @@ private logDebug(msg) {
 
 private logTrace(msg) {
 	// log.trace "$msg"
+}
+
+def formatDate(batteryReset) {
+
+	def correctedTimezone = ""
+	def timeString = clockformat ? "HH:mm:ss" : "h:mm:ss aa"
+
+	// If user's hub timezone is not set, display error messages in log and events log, and set timezone to GMT to avoid errors
+	if (!(location.timeZone)) {
+		correctedTimezone = TimeZone.getTimeZone("GMT")
+		log.error "${device.displayName}: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app."
+		sendEvent(name: "error", value: "", descriptionText: "ERROR: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app.")
+	} else {
+		correctedTimezone = location.timeZone
+	}
+	if (dateformat == "US" || dateformat == "" || dateformat == null) {
+		if (batteryReset){
+			return new Date().format("MMM dd yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE MMM dd yyyy ${timeString}", correctedTimezone)
+		}
+	} else if (dateformat == "UK") {
+		if (batteryReset) {
+			return new Date().format("dd MMM yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE dd MMM yyyy ${timeString}", correctedTimezone)
+		}
+	} else {
+		if (batteryReset) {
+			return new Date().format("yyyy MMM dd", correctedTimezone)
+		} else {
+			return new Date().format("EEE yyyy MMM dd ${timeString}", correctedTimezone)
+		}
+	}
 }
