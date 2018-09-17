@@ -92,7 +92,7 @@ metadata {
 		}
 
 		main(["switch"])
-		details(["switch", "colorName", "blank", "Refresh"])
+		details(["switch", "colorName", "blank", "refresh"])
 	}
 }
 
