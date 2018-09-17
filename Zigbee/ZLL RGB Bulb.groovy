@@ -81,8 +81,8 @@ metadata {
 				attributeState "color", action:"color control.setColor"
 			}
 		}
-	        standardTile("blank", "", "", width: 2, height: 2, decoration: "flat", inactiveLabel: true) {
-        		state "default", label: ""
+	        standardTile("blank", "", inactiveLabel: true, decoration: "flat", width: 2, height: 2) {
+        		state "default", action: "", label: ""
         	}
         	valueTile("colorName", "device.colorName", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
         		state "colorName", label: '${currentValue}'
