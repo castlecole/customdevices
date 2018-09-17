@@ -29,6 +29,9 @@ metadata {
 		capability "Switch Level"
 		capability "Health Check"
 
+		attribute "lastCheckinDate", "Date"		
+		attribute "lastCheckin", "string"
+
 		fingerprint profileId: "C05E", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300", outClusters: "0019"
 		fingerprint profileId: "C05E", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 1000", outClusters: "0019"
 		fingerprint profileId: "C05E", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 1000", outClusters: "0019", "manufacturer":"OSRAM", "model":"Classic A60 RGBW", deviceJoinName: "OSRAM LIGHTIFY LED Classic A60 RGBW"
@@ -69,10 +72,13 @@ metadata {
 	tiles(scale: 2) {
 		multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: true){
 			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-				attributeState "on", label:'${name}', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_on.png", backgroundColor:"#359148", nextState:"turningOff"
-				attributeState "off", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
+				attributeState "on", label:'', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_on.png", backgroundColor:"#359148", nextState:"turningOff"
+				attributeState "off", label:'', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
 				attributeState "turningOn", label:'${name}', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#359148", nextState:"turningOff"
 				attributeState "turningOff", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
+			}
+			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
+				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
 			}
 			tileAttribute ("device.level", key: "SLIDER_CONTROL") {
 				attributeState "level", action:"switch level.setLevel"
@@ -81,18 +87,15 @@ metadata {
 				attributeState "color", action:"color control.setColor"
 			}
 		}
-	        standardTile("blank", "", inactiveLabel: true, decoration: "flat", width: 2, height: 2) {
-        		state "default", action: "", label: ""
-        	}
-        	valueTile("colorName", "device.colorName", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-        		state "colorName", label: '${currentValue}'
+        	valueTile("colorName", "device.colorName", inactiveLabel: false, decoration: "flat", width: 4, height: 2) {
+        		state "colorName", label: 'Selected Colour:\n${currentValue}'
         	}
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 			state "default", label:"", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
 		}
 
 		main(["switch"])
-		details(["switch", "colorName", "blank", "refresh"])
+		details(["switch", "colorName", "refresh"])
 	}
 }
 
@@ -107,6 +110,15 @@ private getCOLOR_CONTROL_CLUSTER() { 0x0300 }
 // Parse incoming device messages to generate events
 def parse(String description) {
 	log.debug "description is $description"
+
+	// Determine current time and date in the user-selected date format and clock style
+	def now = formatDate()    
+	def nowDate = new Date(now).getTime()
+
+	// Any report - test, smoke, clear in a lastCheckin event and update to Last Checkin tile
+	// However, only a non-parseable report results in lastCheckin being displayed in events log
+	sendEvent(name: "lastCheckin", value: now, displayed: false)
+	sendEvent(name: "lastCheckinDate", value: nowDate, displayed: false)
 
 	def finalResult = zigbee.getEvent(description)
 	if (finalResult) {
@@ -228,4 +240,38 @@ def setSaturation(value) {
 	//payload-> sat value, transition time
 	zigbee.command(COLOR_CONTROL_CLUSTER, SATURATION_COMMAND, getScaledSaturation(value), "0000") +
 	zigbee.readAttribute(COLOR_CONTROL_CLUSTER, ATTRIBUTE_SATURATION)
+}
+def formatDate(batteryReset) {
+
+	def correctedTimezone = ""
+	def timeString = clockformat ? "HH:mm:ss" : "h:mm:ss aa"
+
+	// If user's hub timezone is not set, display error messages in log and events log, and set timezone to GMT to avoid errors
+	if (!(location.timeZone)) {
+		correctedTimezone = TimeZone.getTimeZone("GMT")
+		log.error "${device.displayName}: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app."
+		sendEvent(name: "error", value: "", descriptionText: "ERROR: Time Zone not set, so GMT was used. Please set up your location in the SmartThings mobile app.")
+	} else {
+		correctedTimezone = location.timeZone
+	}
+
+	if (dateformat == "US" || dateformat == "" || dateformat == null) {
+		if (batteryReset){
+			return new Date().format("MMM dd yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE MMM dd yyyy ${timeString}", correctedTimezone)
+		}
+	} else if (dateformat == "UK") {
+		if (batteryReset) {
+			return new Date().format("dd MMM yyyy", correctedTimezone)
+		} else {
+			return new Date().format("EEE dd MMM yyyy ${timeString}", correctedTimezone)
+		}
+	} else {
+		if (batteryReset) {
+			return new Date().format("yyyy MMM dd", correctedTimezone)
+		} else {
+		return new Date().format("EEE yyyy MMM dd ${timeString}", correctedTimezone)
+		}
+	}
 }
