@@ -78,11 +78,11 @@ metadata {
 				attributeState "turningOff", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
 			}
 			tileAttribute("device.lastCheckin", key: "SECONDARY_CONTROL") {
-				attributeState("default", label:'Last Checkin: ${currentValue}', icon: "st.Health & Wellness.health9")
+				attributeState("default", label:'${currentValue}', icon: "st.Health & Wellness.health9")
 			}
-			tileAttribute ("device.level", key: "SLIDER_CONTROL") {
-				attributeState "level", action:"switch level.setLevel"
-			}
+//			tileAttribute ("device.level", key: "SLIDER_CONTROL") {
+//				attributeState "level", action:"switch level.setLevel"
+//			}
 			tileAttribute ("device.color", key: "COLOR_CONTROL") {
 				attributeState "color", action:"color control.setColor"
 			}
