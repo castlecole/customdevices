@@ -70,7 +70,7 @@ metadata {
 	
  	// UI tile definitions
 	tiles(scale: 2) {
-		multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: true){
+		multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: false){
 			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
 				attributeState "on", label:'', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_on.png", backgroundColor:"#359148", nextState:"turningOff"
 				attributeState "off", label:'', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
@@ -87,6 +87,14 @@ metadata {
 				attributeState "color", action:"color control.setColor"
 			}
 		}
+		multiAttributeTile(name:"switch2", type: "lighting", width: 6, height: 4, canChangeIcon: false){
+			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
+				attributeState "on", label:'${name}', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_on.png", backgroundColor:"#359148", nextState:"turningOff"
+				attributeState "off", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
+				attributeState "turningOn", label:'${name}', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#359148", nextState:"turningOff"
+				attributeState "turningOff", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/led_light_bulb_off.png", backgroundColor:"#00a0dc", nextState:"turningOn"
+			}
+		}
         	valueTile("colorName", "device.colorName", inactiveLabel: false, decoration: "flat", width: 4, height: 2) {
         		state "colorName", label: 'Selected Colour:\n${currentValue}'
         	}
@@ -94,7 +102,7 @@ metadata {
 			state "default", label:"", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
 		}
 
-		main(["switch"])
+		main(["switch2"])
 		details(["switch", "colorName", "refresh"])
 	}
 }
