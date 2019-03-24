@@ -156,12 +156,14 @@ metadata {
 			state "configure", label:'', action:"configure", icon:"st.secondary.configure"
 		}
 */
+		htmlTile(name:"graphHTML", action: "getGraphHTML", refreshInterval: 1, width:6, height:6, whitelist: ["www.gstatic.com"])
+
 		valueTile("history", "device.history", decoration:"flat",width: 6, height: 2) {
 			state "history", label:'${currentValue}'
 		}
 
 		main (["currentWATTS2"])
-		details(["currentWATTS", "currentKWH", "kwhCosts", "history", "resetmin", "resetmax", "resetkwh", "refresh"])
+		details(["currentWATTS", "currentKWH", "kwhCosts", "graphHTML", "history", "resetmin", "resetmax", "resetkwh", "refresh"])
 	}
 
 	preferences {
@@ -178,6 +180,10 @@ metadata {
 		input "decimalPositions", "number", title: "How many decimal positions do you want watts AND kWh to display? (range 0 - 3)", defaultValue: 3, range: "0..3", required: false, displayDuringSetup: true
 		input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
 	}
+}
+
+mappings {
+	path("/getGraphHTML") {action: [GET: "getGraphHTML"]}
 }
 
 def updated() {
@@ -231,7 +237,7 @@ def zwaveEvent(physicalgraph.zwave.commands.meterv1.MeterReport cmd) {
 
 				state.energyValue = newValue
 				BigDecimal costDecimal = newValue * (kWhCost as BigDecimal)
-				def costDisplay = "\$"
+				def costDisplay = "\£ "
 				costDisplay += String.format("%3.2f",costDecimal)
 				sendEvent(name: "kwhCosts", value: costDisplay as String, unit: "", displayed: false)
 				if (state.displayDisabled) {
@@ -465,4 +471,124 @@ def configure() {
 	])
 
 	cmd
+}
+
+String getDataString(Integer seriesIndex) {
+
+	def dataString = ""
+	def dataTable = []
+
+	switch (seriesIndex) {
+		case 1:
+			dataTable = state.energyTableYesterday
+			break
+		case 2:
+			dataTable = state.powerTableYesterday
+			break
+		case 3:
+			dataTable = state.energyTable
+			break
+		case 4:
+			dataTable = state.powerTable
+			break
+	}
+	dataTable.each() {
+		def dataArray = [[it[0],it[1],0],null,null,null,null]
+		dataArray[seriesIndex] = it[2]
+		dataString += dataArray.toString() + ","
+	}
+	return dataString
+}
+
+def getStartTime() {
+	def startTime = 24
+	if (state.powerTable.size() > 0) {
+		startTime = state.powerTable.min{it[0].toInteger()}[0].toInteger()
+	}
+	if (state.powerTableYesterday.size() > 0) {
+		startTime = Math.min(startTime, state.powerTableYesterday.min{it[0].toInteger()}[0].toInteger())
+	}
+	return startTime
+}
+
+def getGraphHTML() {
+	def html = """
+		<!DOCTYPE html>
+			<html>
+				<head>
+					<meta http-equiv="cache-control" content="max-age=0"/>
+					<meta http-equiv="cache-control" content="no-cache"/>
+					<meta http-equiv="expires" content="0"/>
+					<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT"/>
+					<meta http-equiv="pragma" content="no-cache"/>
+					<meta name="viewport" content="width = device-width">
+					<meta name="viewport" content="initial-scale = 1.0, user-scalable=no">
+					<style type="text/css">body,div {margin:1;padding:0}</style>
+					<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+					<script type="text/javascript">
+						google.charts.load('current', {packages: ['corechart']});
+						google.charts.setOnLoadCallback(drawGraph);
+						function drawGraph() {
+							var data = new google.visualization.DataTable();
+							data.addColumn('timeofday', 'time');
+							data.addColumn('number', 'Energy (Yesterday)');
+							data.addColumn('number', 'Power (Yesterday)');
+							data.addColumn('number', 'Energy (Today)');
+							data.addColumn('number', 'Power (Today)');
+							data.addRows([
+								${getDataString(1)}
+								${getDataString(2)}
+								${getDataString(3)}
+								${getDataString(4)}
+							]);
+
+							var options = {
+								fontName: 'San Francisco, Roboto, Arial',
+								height: 275,
+								hAxis: {
+									format: 'H:mm',
+									minValue: [${getStartTime()},0,0],
+									slantedText: false
+								},
+								series: {
+									0: {targetAxisIndex: 1, color: '#FFC2C2', lineWidth: 1},
+									1: {targetAxisIndex: 0, color: '#D1DFFF', lineWidth: 1},
+									2: {targetAxisIndex: 1, color: '#FF0000'},
+									3: {targetAxisIndex: 0, color: '#004CFF'}
+								},
+								vAxes: {
+									0: {
+										title: 'Power (W)',
+										format: 'decimal',
+										textStyle: {color: '#004CFF'},
+										titleTextStyle: {color: '#004CFF'}
+									},
+									1: {
+										title: 'Energy (kWh)',
+										format: 'decimal',
+										textStyle: {color: '#FF0000'},
+										titleTextStyle: {color: '#FF0000'},
+										gridlines: {count: 0}
+									}
+								},
+								legend: {
+									position: 'none'
+								},
+								chartArea: {
+									width: '72%',
+									height: '85%'
+								}
+							};
+							var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+							chart.draw(data, options);
+						}
+					</script>
+				</head>
+				<body>
+					<div style="font:Arial;font-size:20px;color:#bc2323;text-align:center">Electricity Usage - Last 24 Hours</div>
+					<div id="chart_div" style="border:1px solid black"></div>
+				</body>
+			</html>
+		"""
+	render contentType: "text/html", data: html, status: 200
 }
