@@ -12,8 +12,12 @@
  *
  */
 
+def version() {
+	return "v1 (20190331)\nZigbee Light Switch"
+}
+
 metadata {
-    definition (name: "ZigBee Switch", namespace: "castlecole", author: "SmartThings", ocfDeviceType: "oic.d.switch", runLocally: true, minHubCoreVersion: '000.019.00012', executeCommandsLocally: true) {
+    definition (name: "ZigBee Light Switch", namespace: "castlecole", author: "SmartThings", ocfDeviceType: "oic.d.switch", runLocally: true, minHubCoreVersion: '000.019.00012', executeCommandsLocally: true) {
         capability "Actuator"
         capability "Configuration"
         capability "Refresh"
@@ -40,18 +44,24 @@ metadata {
         reply "zcl on-off off": "on/off: 0"
     }
 
+    preferences {
+	    input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
+    }
+    
     tiles(scale: 2) {
         multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: true){
             tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-                attributeState "on", label:'${name}', action:"switch.off", icon:"st.switches.light.on", backgroundColor:"#00A0DC", nextState:"turningOff"
-                attributeState "off", label:'${name}', action:"switch.on", icon:"st.switches.light.off", backgroundColor:"#ffffff", nextState:"turningOn"
-                attributeState "turningOn", label:'${name}', action:"switch.off", icon:"st.switches.light.on", backgroundColor:"#00A0DC", nextState:"turningOff"
-                attributeState "turningOff", label:'${name}', action:"switch.on", icon:"st.switches.light.off", backgroundColor:"#ffffff", nextState:"turningOn"
+                attributeState "on", label:'${name}', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Switch1On.png", backgroundColor:"#00A0DC", nextState:"turningOff"
+                attributeState "off", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Switch1Off.png", backgroundColor:"#ffffff", nextState:"turningOn"
+                attributeState "turningOn", label:'${name}', action:"switch.off", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Switch1On.png", backgroundColor:"#00A0DC", nextState:"turningOff"
+                attributeState "turningOff", label:'${name}', action:"switch.on", icon:"https://raw.githubusercontent.com/castlecole/Xiaomi/master/Switch1Off.png", backgroundColor:"#ffffff", nextState:"turningOn"
             }
         }
-        standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-            state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
+
+	    standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+  	        state "default", label:"", action:"refresh.refresh", icon:"https://raw.githubusercontent.com/castlecole/customdevices/master/refresh.png"
         }
+
         main "switch"
         details(["switch", "refresh"])
     }
