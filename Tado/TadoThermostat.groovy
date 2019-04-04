@@ -33,7 +33,7 @@
  */
 
 def version() {
-	return "v2 (20180514)\nTado Heating Thermostat - WWW Interface"
+	return "v2.1 (20190404)\nTado Heating Thermostat - WWW Interface"
 }
 
 metadata {
@@ -70,7 +70,7 @@ simulator {
 
 preferences {
         section {
-            input name: "Thermostat Type", type: "enum", title: "Tado Theromstat Type: ", options: ["Radiator", "Heating"], description: "Sets the icon seen in the device.", defaultValue: "Radiator", displayDuringSetup: true, required: true
+            input name: "ThermostatType", type: "enum", title: "Tado Theromstat Type: ", options: ["Radiator", "Heating"], description: "Sets the icon seen in the device.", defaultValue: "Radiator", displayDuringSetup: true, required: true
         }
 	section {
 	    input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
@@ -104,13 +104,23 @@ tiles(scale: 2){
 		}
 	}
 
+
 	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
+		tileAttribute("device.ThermostatType", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
+       			attributeState("Radiator", label:'${device.temperature}°', backgroundColor:"#fab907",
+				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png")
+       			attributeState("Heating", label:'${device.temperature}°', backgroundColor:"#fab907",
+				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Thermo.png")
+            	}
+	}
+
+/*	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
 		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
        			attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907",
 				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
             	}
 	}
-	
+*/	
 	valueTile("heatingSetpoint", "device.heatingSetpoint", width: 2, height: 1, decoration: "flat") {
 		state "default", label: 'Set Point\r\n\${currentValue}°'
 	}
