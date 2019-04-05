@@ -50,8 +50,7 @@ metadata {
 		capability "Polling"
 		capability "Refresh"
 		attribute "tadoMode", "string"
-        	attribute "ThermostatType", "string"
-        	attribute "TadoIcon", "string"
+        	attribute "thermostatType", "string"
 		command "temperatureUp"
     		command "temperatureDown"
     		command "heatingSetpointUp"
@@ -70,7 +69,7 @@ simulator {
 
 preferences {
         section {
-            input name: "ThermostatType", type: "enum", title: "Tado Theromstat Type: ", options: ["Radiator", "Heating"], description: "Sets the icon seen in the device.", defaultValue: "Radiator", displayDuringSetup: true, required: true
+            input name: "tadoIcon", type: "enum", title: "Tado Theromstat Type: ", options: ["Radiator", "Heating"], description: "Sets the icon seen in the device.", defaultValue: "Radiator", displayDuringSetup: true, required: true
         }
 	section {
 	    input description: "Version: ${version()}", type: "paragraph", element: "paragraph", title: ""
@@ -104,14 +103,13 @@ tiles(scale: 2){
 		}
 	}
 
-
 	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
-		tileAttribute("device.ThermostatType", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
-       			attributeState("Radiator", label:'${device.temperature}°', backgroundColor:"#fab907",
-				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png")
-       			attributeState("Heating", label:'${device.temperature}°', backgroundColor:"#fab907",
-				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Thermo.png")
-            	}
+		tileAttribute("thermostatType", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
+       		attributeState("Heating", label:'${state.temperature}°', backgroundColor:"#fab907",
+							icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Thermo.png")
+       		attributeState("Radiator", label:'${state.temperature}°', backgroundColor:"#fab907",
+							icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png")
+	        }
 	}
 
 /*	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
@@ -240,7 +238,8 @@ def installed(){
 def getInitialDeviceinfo(){
 	log.debug "Getting 'initial Device info'"
 	parent.getCapabilitiesCommand(this, device.deviceNetworkId)
-    refresh()
+    	sendEvent(name: "thermostatType", value: tadoIcon, displayed: false)
+    	refresh()
 }
 
 def poll() {
@@ -257,7 +256,7 @@ def refresh() {
 def auto() {
 	log.debug "Executing 'auto'"
 	parent.autoCommand(this)
-  parent.statusCommand(this)
+  	parent.statusCommand(this)
 }
 
 def on() {
@@ -274,8 +273,8 @@ def off() {
 
 def setHeatingSetpoint(targetTemperature) {
 	log.debug "Executing 'setHeatingSetpoint'"
-  log.debug "Target Temperature ${targetTemperature}"
-  parent.setHeatingTempCommand(this,targetTemperature)
+  	log.debug "Target Temperature ${targetTemperature}"
+  	parent.setHeatingTempCommand(this,targetTemperature)
 	parent.statusCommand(this)
 }
 
@@ -306,31 +305,31 @@ def temperatureUp(){
 
 def temperatureDown(){
 	if (device.currentValue("thermostatMode") == "heat") {
-    	heatingSetpointDown()
-    } else {
-    	log.debug ("temperature setpoint not supported in the current thermostat mode")
-    }
+    		heatingSetpointDown()
+   	 } else {
+    		log.debug ("temperature setpoint not supported in the current thermostat mode")
+    	}
 }
 
 def heatingSetpointUp(){
 	log.debug "Current SetPoint Is " + (device.currentValue("thermostatSetpoint")).toString()
-    if ((device.currentValue("thermostatSetpoint").toInteger() - 1 ) < state.MinHeatTemp){
-    	log.debug("cannot decrease heat setpoint, its already at the minimum level of " + state.MinHeatTemp)
-    } else {
+ 	if ((device.currentValue("thermostatSetpoint").toInteger() - 1 ) < state.MinHeatTemp){
+    		log.debug("cannot decrease heat setpoint, its already at the minimum level of " + state.MinHeatTemp)
+    	} else {
 		int newSetpoint = (device.currentValue("thermostatSetpoint")).toInteger() + 1
 		log.debug "Setting heatingSetpoint up to: ${newSetpoint}"
 		setHeatingSetpoint(newSetpoint)
-    }
+   	}
 }
 
 def heatingSetpointDown(){
-	log.debug "Current SetPoint Is " + (device.currentValue("thermostatSetpoint")).toString()
-  if ((device.currentValue("thermostatSetpoint").toInteger() + 1 ) > state.MaxHeatTemp){
-    log.debug("cannot increase heat setpoint, its already at the maximum level of " + state.MaxHeatTemp)
+    log.debug "Current SetPoint Is " + (device.currentValue("thermostatSetpoint")).toString()
+    if ((device.currentValue("thermostatSetpoint").toInteger() + 1 ) > state.MaxHeatTemp){
+    	log.debug("cannot increase heat setpoint, its already at the maximum level of " + state.MaxHeatTemp)
     } else {
-      int newSetpoint = (device.currentValue("thermostatSetpoint")).toInteger() - 1
-      log.debug "Setting heatingSetpoint down to: ${newSetpoint}"
-      setHeatingSetpoint(newSetpoint)
+      	int newSetpoint = (device.currentValue("thermostatSetpoint")).toInteger() - 1
+      	log.debug "Setting heatingSetpoint down to: ${newSetpoint}"
+      	setHeatingSetpoint(newSetpoint)
     }
 }
 
@@ -342,7 +341,7 @@ def heat(){
 }
 
 def emergencyHeat(){
-  parent.emergencyHeat(this)
+ 	parent.emergencyHeat(this)
 }
 
 def endManualControl(){
