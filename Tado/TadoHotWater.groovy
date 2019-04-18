@@ -29,9 +29,9 @@ preferences {
 }
 
 metadata {
-	definition (name: "Tado Hot Water Control", namespace: "fuzzysb", author: "Stuart Buchanan") {
+	definition (name: "Tado Hot Water Control", namespace: "castlecole", author: "Stuart Buchanan") {
 		capability "Actuator"
-    capability "Temperature Measurement"
+    		capability "Temperature Measurement"
 		capability "Thermostat Heating Setpoint"
 		capability "Thermostat Setpoint"
 		capability "Thermostat Mode"
@@ -39,13 +39,13 @@ metadata {
 		capability "Thermostat"
 		capability "Polling"
 		capability "Refresh"
-    attribute "tadoMode", "string"
+    		attribute "tadoMode", "string"
 		command "temperatureUp"
-    command "temperatureDown"
-    command "heatingSetpointUp"
-    command "heatingSetpointDown"
+    		command "temperatureDown"
+    		command "heatingSetpointUp"
+    		command "heatingSetpointDown"
 		command "on"
-    command "endManualControl"
+    		command "endManualControl"
 		command "emergencyHeat"
 
 	}
