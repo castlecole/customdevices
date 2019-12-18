@@ -103,7 +103,7 @@ tiles(scale: 2){
 		}
 	}
 
-	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
+/*	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
 		tileAttribute("thermostatType", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
        		attributeState("Heating", label:'${state.temperature}°', backgroundColor:"#fab907",
 							icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Thermo.png")
@@ -111,14 +111,14 @@ tiles(scale: 2){
 							icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png")
 	        }
 	}
-
-/*	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
+*/
+	multiAttributeTile(name: "thermostat2", type:"generic", width:6, height:4) {
 		tileAttribute("device.temperature", key:"PRIMARY_CONTROL", canChangeIcon: true, canChangeBackground: true){
        			attributeState "default", label:'${currentValue}°', backgroundColor:"#fab907",
 				icon: "https://raw.githubusercontent.com/castlecole/customdevices/master/Tado_Radiator.png"
             	}
 	}
-*/	
+	
 	valueTile("heatingSetpoint", "device.heatingSetpoint", width: 2, height: 1, decoration: "flat") {
 		state "default", label: 'Set Point\r\n\${currentValue}°'
 	}
